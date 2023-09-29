@@ -1,2 +1,0 @@
-# HolyGlimps-Client
-
