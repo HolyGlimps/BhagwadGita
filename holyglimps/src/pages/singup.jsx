@@ -1,9 +1,11 @@
 import React from 'react';
+import Navbar from './navbar';
 import './styles/style.css'
 
 const Signup = () => {
   return (
     <div class="outer-box">
+      <Navbar />
       <div class="inner-box">
         <header class="signup-header">
           <h1>Signup</h1>

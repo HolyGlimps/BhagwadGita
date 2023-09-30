@@ -1,12 +1,14 @@
 import React from 'react';
+import Navbar from './navbar';
 import './styles/style.css'
 
 const Login = () => {
   return (
     <div class="outer-box">
+      <Navbar />
       <div class="inner-box">
         <header class="login-header">
-          <h1>login</h1>
+          <h1>Login</h1>
         </header>
         <main class="login-body">
           <form action="#">
