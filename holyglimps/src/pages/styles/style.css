@@ -13,7 +13,7 @@ body {
 .outer-box {
     width: 100vw;
     height: 100vh;
-    background: linear-gradient(to top left, #3ed8ff, #a8f5ff);
+    background: linear-gradient(to top left, #eb863d, #fff9a8);
 }
 
 .inner-box {
@@ -27,7 +27,7 @@ body {
     background: linear-gradient(to top left, #ffffffff, #ffffff33);
     backdrop-filter: blur(8px);
     border-radius: 8px;
-    box-shadow: 2px 2px 5px #2773a5;
+    box-shadow: 2px 2px 5px black;
     /* border: 2px solid black; */
     z-index: 2;
 }
@@ -66,14 +66,14 @@ body {
 }
 
 .signup-body p input[type="submit"] {
-    background-color: #3498db;
+    background-color: #eb863d;
     border: none;
     color: white;
     cursor: pointer;
 }
 
 .signup-body p input[type="submit"]:hover {
-    background-color: #2773a5;
+    background-color: #eb863d;
 }
 
 .signup-footer p {
@@ -82,7 +82,7 @@ body {
 }
 
 .signup-footer p a {
-    color: #2773a5;
+    color: #eb863d;
 }
 
 .login-header h1 {
@@ -119,14 +119,14 @@ body {
 }
 
 .login-body p input[type="submit"] {
-    background-color: #3498db;
+    background-color: #eb863d;
     border: none;
     color: white;
     cursor: pointer;
 }
 
 .login-body p input[type="submit"]:hover {
-    background-color: #2773a5;
+    background-color: #eb863d;
 }
 
 .login-footer p {
@@ -135,7 +135,7 @@ body {
 }
 
 .login-footer p a {
-    color: #2773a5;
+    color: #eb863d;
 }
 
 .circle {
