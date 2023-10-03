@@ -13,7 +13,7 @@ function Navbar() {
 
           <div className="group inline-block text-current hover:text-cyan-50 relative">
             <button> Account </button>
-            <ul className="absolute hidden group-hover:block bg-[#eb863d] text-gray-800 rounded-lg">
+            <ul className="absolute hidden group-hover:block bg-[#eb863d] text-gray-800 rounded-lg overflow-hidden">
               <li><Link to="/login" className="block px-4 py-2 hover:bg-[#fff9a8]">Login</Link></li>
               <li><Link to="/signup" className="block px-4 py-2 hover:bg-[#fff9a8]">Signup</Link></li>
             </ul>
