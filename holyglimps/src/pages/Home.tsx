@@ -17,7 +17,7 @@ const Homepage: NextPage = () => {
             <nav className={styles.navbar}>
                 <div className={styles.navbarLinks}>
                     <a href="#">Home</a>
-                    <a href="#">About</a>
+                    {session && session.user ? (<a>Chapter</a>) : ""}
                     <a href="#">Contact</a>
                 </div>
                 <div className={styles.signup}>
@@ -31,24 +31,7 @@ const Homepage: NextPage = () => {
             <main className={styles.main}>
                 <div>
                     {session && session.user ? (
-
-                        <div className={styles.card}>
-                            <div className={styles.cardImage}>
-                                <Image src="/architecture.png" alt="book" width={500} height={300} />
-                            </div>
-                            <div className={styles.cardContent}>
-                                <h2>Computer Programming Cookbook</h2>
-                                <p>
-                                    This is a simple hero unit, a simple jumbotron-style component for calling
-                                    extra attention to featured content or information.
-                                </p>
-                                <p>
-                                    <a className={styles.btn} href="https://nextjs.org/docs" target="_blank">
-                                        Learn More
-                                    </a>
-                                </p>
-                            </div>
-                        </div>
+                        <div><p>Hey {session.user.name} We are happy you logged in with {session.user.email}</p></div>
                     ) : (
                         <p>You need to sign in to Start Reading Bhagwat Gita</p>
                     )}
