@@ -50,7 +50,7 @@ const Homepage: NextPage = () => {
                             </div>
                         </div>
                     ) : (
-                        <p>You need to sign in to access the books</p>
+                        <p>You need to sign in to Start Reading Bhagwat Gita</p>
                     )}
                 </div>
             </main>
