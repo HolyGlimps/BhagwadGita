@@ -50,6 +50,10 @@ export default function Page() {
         router.push("/"); // This will take the user back to the previous page
     };
 
+    const handleStartReading = () =>{
+        router.push(`/chapter/${id}/verse/1`)
+    }
+
     return (
         <div className="bg-slate-200 dark:bg-cyan-950 h-screen">
             {/* Navigation bar with Go Back button */}
@@ -66,6 +70,8 @@ export default function Page() {
             {data ? (
                 <div>
                     <ChapterInfo data={data} />
+
+                    <button className='bg-blue' onClick={handleStartReading} > Start Reading </button>
                 </div>
             ) : (
                 <p>Loading data...</p>
