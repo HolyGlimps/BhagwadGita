@@ -72,7 +72,7 @@ export default function Page() {
                     <ChapterInfo data={data} />
 
                     <div className='flex items-center justify-center'>
-                        <button className='bg-blue border border-gray-500 rounded-md px-1' onClick={handleStartReading} > Start Reading </button>
+                        <button    className="bg-blue-500 text-white rounded-md px-4 py-2" onClick={handleStartReading} > Start Reading </button>
                     </div>
                 </div>
             ) : (

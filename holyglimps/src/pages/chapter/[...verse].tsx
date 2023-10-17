@@ -8,13 +8,11 @@ const Verse = () => {
   const { data: session, status } = useSession();
 
   const { verse } = router.query;
-  console.log(verse);
-  // Ensure that the verse data is initialized as an empty object
-  const [data, setData] = useState({});
 
-  //   const dverse = [1, 1, 1];
   const chapterNumber = verse[0];
   const verseNumber = verse[2];
+
+  const [data, setData] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,9 +28,8 @@ const Verse = () => {
 
       try {
         const response = await axios.request(options);
-        // Set the data using the useState hook
-        console.log(response.data);
         setData(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error(error);
       }
@@ -46,32 +43,51 @@ const Verse = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <ShowVerse verse={data} />
+      <header>
+        <h1 className="text-2xl font-semibold">Bhagavad Gita</h1>
+      </header>
+      <ShowVerse
+        verse={data}
+        chapterNumber={chapterNumber}
+        verseNumber={verseNumber}
+      />
     </div>
   );
 };
 
 export default Verse;
 
-const ShowVerse = ({ verse }) => {
+const ShowVerse = ({ verse, chapterNumber, verseNumber }) => {
   if (!verse) {
-    return null; // Return nothing if verse data is not available yet
+    return null;
   }
 
-  return <VerseComponent verse={verse}></VerseComponent>;
+  return (
+    <VerseComponent
+      verse={verse}
+      chapterNumber={chapterNumber}
+      verseNumber={verseNumber}
+    />
+  );
 };
 
-function VerseComponent({ verse }) {
+function VerseComponent({ verse, chapterNumber, verseNumber }) {
   const {
     id,
     verse_number,
     chapter_number,
     slug,
     text,
-    commentaries,
-    translations,
     transliteration,
+    translations,
   } = verse;
+
+  const router = useRouter();
+
+  const handleNext = () => {
+    const nextVerseNumber = parseInt(verseNumber) + 1;
+    router.push(`/chapter/${chapterNumber}/verse/${nextVerseNumber}`);
+  };
 
   return (
     <>
