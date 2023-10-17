@@ -59,7 +59,7 @@ export default function Page() {
             {/* Navigation bar with Go Back button */}
             <nav className="p-4 text-white ">
                 <div className="flex justify-between items-center">
-                    <button onClick={handleGoBack} className="font-bold text-xl">Go Back</button>
+                    <button onClick={handleGoBack} className="font-bold text-xl text-black dark:text-white border border-gray-400 rounded-md px-1">Go Back</button>
                     {/* <a href="#" className="font-bold text-xl">Your App Name</a>
                     <a href="#" className="font-bold text-xl">Some Other Option</a> */}
                     <ChapterSelector />
@@ -71,7 +71,9 @@ export default function Page() {
                 <div>
                     <ChapterInfo data={data} />
 
-                    <button className='bg-blue' onClick={handleStartReading} > Start Reading </button>
+                    <div className='flex items-center justify-center'>
+                        <button className='bg-blue border border-gray-500 rounded-md px-1' onClick={handleStartReading} > Start Reading </button>
+                    </div>
                 </div>
             ) : (
                 <p>Loading data...</p>

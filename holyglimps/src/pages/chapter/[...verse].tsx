@@ -75,12 +75,15 @@ function VerseComponent({ verse }) {
 
   return (
     <div className="verse">
-      <h3>
+      <h3 className='font-semibold'>
         Chapter {chapter_number}, Verse {verse_number}
       </h3>
       <p>{text}</p>
+      
+      <h4 className='font-semibold'>Trans-literation</h4>
+      <p>{transliteration}</p>
 
-      <h4>Commentaries</h4>
+      <h4 className='font-semibold'>Commentaries</h4>
       {/* <ul>
         {commentaries.map((commentary) => (
           <li key={commentary.id}>
@@ -89,7 +92,7 @@ function VerseComponent({ verse }) {
         ))}
       </ul> */}
 
-      <h4>Translations</h4>
+      <h4 className='font-semibold'>Translations</h4>
       {/* <ul>
         {translations.map((translation) => (
           <li key={translation.id}>
@@ -99,8 +102,9 @@ function VerseComponent({ verse }) {
         ))}
       </ul> */}
 
-      <h4>Transliteration</h4>
-      <p>{transliteration}</p>
+      <div className='flex items-center justify-center'>
+        <button className='bg-blue border border-gray-500 rounded-md px-1'> Next </button>
+      </div>
     </div>
   );
 }
