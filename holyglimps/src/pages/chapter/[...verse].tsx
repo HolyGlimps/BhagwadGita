@@ -5,12 +5,13 @@ import { useSession } from 'next-auth/react';
 
 const Verse = () => {
   const router = useRouter();
+  const [chapterNumber, setchapterNumber] = useState('');
+  const [verseNumber, setVerseNumber] = useState('');
+  const [versecount, setversecounter] = useState('');
+
   const { data: session, status } = useSession();
 
   const { verse } = router.query;
-
-  const chapterNumber = verse[0];
-  const verseNumber = verse[2];
 
   const [data, setData] = useState({});
 
@@ -35,7 +36,38 @@ const Verse = () => {
       }
     };
     fetchData();
-  }, [chapterNumber, verseNumber]);
+
+    function set() {
+      if (verse !== undefined) {
+        const chapterNumber = verse[0];
+        const verseNumber = verse[2];
+        setchapterNumber(chapterNumber);
+        setVerseNumber(verseNumber);
+      }
+    }
+    set();
+
+    const fetchDataChapter = async () => {
+      const options = {
+        method: 'GET',
+        url: `https://bhagavad-gita3.p.rapidapi.com/v2/chapters/${chapterNumber}/`,
+        headers: {
+          'X-RapidAPI-Key':
+            '5725d40cfemsh0ca35a3e8abe856p1b3effjsn2e6a501084c9',
+          'X-RapidAPI-Host': 'bhagavad-gita3.p.rapidapi.com',
+        },
+      };
+
+      try {
+        const response = await axios.request(options);
+        console.log(response.data);
+        setversecounter(response.data.verses_count)
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchDataChapter();
+  }, [chapterNumber, verse, verseNumber]);
 
   if (status === 'unauthenticated') {
     return <p>Access Denied. Please Sign In to Access This Page.</p>;
@@ -45,6 +77,7 @@ const Verse = () => {
     <div className="container mx-auto p-4">
       <header>
         <h1 className="text-2xl font-semibold">Bhagavad Gita</h1>
+        <p>{versecount}</p>
       </header>
       <ShowVerse
         verse={data}
@@ -80,12 +113,18 @@ function VerseComponent({ verse, chapterNumber, verseNumber }) {
     text,
     transliteration,
     translations,
+    commentaries,
   } = verse;
 
   const router = useRouter();
 
   const handleNext = () => {
     const nextVerseNumber = parseInt(verseNumber) + 1;
+    router.push(`/chapter/${chapterNumber}/verse/${nextVerseNumber}`);
+  };
+
+  const handlePrev = () => {
+    const nextVerseNumber = parseInt(verseNumber) - 1;
     router.push(`/chapter/${chapterNumber}/verse/${nextVerseNumber}`);
   };
 
@@ -96,40 +135,58 @@ function VerseComponent({ verse, chapterNumber, verseNumber }) {
       </nav>
 
       <div className="verse">
-        <h3 className='font-extrabold text-xl'>
+        <h3 className="font-extrabold text-xl">
           Chapter {chapter_number}, Verse {verse_number}
         </h3>
-        <p className='ml-5 text-2xl'>{text}</p>
-        
+        <p className="ml-5 text-2xl">{text}</p>
         {/* <h4 className='font-semibold'>Trans-literation</h4> */}
-        <p className='ml-5 text-lime-600'>{transliteration}</p>
+        <p className="ml-5 text-lime-600">{transliteration}</p>
 
-        <div className='border border-gray-300 rounded-md m-2'>
-          <h4 className='font-bold text-xl pt-2 ml-3'>Translations</h4>
-          <ul className='ml-5'>
-            {translations && translations.map((translation) => (
-              <li key={translation.id} className='p-1'>
-                <strong className='text-orange-600'>{translation.author_name}</strong> ({translation.language}):{' '}
-                {translation.description}
-              </li>
-            ))}
+        <div className="border border-gray-300 rounded-md m-2">
+          <h4 className="font-bold text-xl pt-2 ml-3">Translations</h4>
+          <ul className="ml-5">
+            {translations &&
+              translations.map((translation) => (
+                <li key={translation.id} className="p-1">
+                  <strong className="text-orange-600">
+                    {translation.author_name}
+                  </strong>{' '}
+                  ({translation.language}): {translation.description}
+                </li>
+              ))}
           </ul>
         </div>
 
-        <div className='border border-gray-300 rounded-md m-2'>
-          <h3 className='font-bold text-xl pt-1 ml-3'>Commentaries</h3>
-          <ul className='ml-5'>
-            {commentaries && commentaries.map((commentary) => (
-              <li className="p-1" key={commentary.id}>
-                <strong className='text-orange-600'>{commentary.author_name}</strong>: {commentary.description}
-              </li>
-            ))}
+        <div className="border border-gray-300 rounded-md m-2">
+          <h3 className="font-bold text-xl pt-1 ml-3">Commentaries</h3>
+          <ul className="ml-5">
+            {commentaries &&
+              commentaries.map((commentary) => (
+                <li className="p-1" key={commentary.id}>
+                  <strong className="text-orange-600">
+                    {commentary.author_name}
+                  </strong>
+                  : {commentary.description}
+                </li>
+              ))}
           </ul>
         </div>
 
-        <div className='flex items-center justify-center'>
-          <button className='bg-blue border border-gray-500 rounded-md px-1 mr-1'> Previous </button>
-          <button className='bg-blue border border-gray-500 rounded-md px-1 ml-1'> Next </button>
+        <div className="flex items-center justify-center">
+          <button
+            onClick={handlePrev}
+            className="bg-blue border border-gray-500 rounded-md px-1 mr-1"
+          >
+            {' '}
+            Previous{' '}
+          </button>
+          <button
+            onClick={handleNext}
+            className="bg-blue border border-gray-500 rounded-md px-1 ml-1"
+          >
+            {' '}
+            Next{' '}
+          </button>
         </div>
       </div>
     </>
