@@ -8,13 +8,11 @@ const Verse = () => {
   const { data: session, status } = useSession();
 
   const { verse } = router.query;
-  console.log(verse);
-  // Ensure that the verse data is initialized as an empty object
-  const [data, setData] = useState({});
 
-  //   const dverse = [1, 1, 1];
   const chapterNumber = verse[0];
   const verseNumber = verse[2];
+
+  const [data, setData] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,9 +28,8 @@ const Verse = () => {
 
       try {
         const response = await axios.request(options);
-        // Set the data using the useState hook
-        console.log(response.data);
         setData(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error(error);
       }
@@ -46,64 +43,73 @@ const Verse = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <ShowVerse verse={data} />
+      <header>
+        <h1 className="text-2xl font-semibold">Bhagavad Gita</h1>
+      </header>
+      <ShowVerse
+        verse={data}
+        chapterNumber={chapterNumber}
+        verseNumber={verseNumber}
+      />
     </div>
   );
 };
 
 export default Verse;
 
-const ShowVerse = ({ verse }) => {
+const ShowVerse = ({ verse, chapterNumber, verseNumber }) => {
   if (!verse) {
-    return null; // Return nothing if verse data is not available yet
+    return null;
   }
 
-  return <VerseComponent verse={verse}></VerseComponent>;
+  return (
+    <VerseComponent
+      verse={verse}
+      chapterNumber={chapterNumber}
+      verseNumber={verseNumber}
+    />
+  );
 };
 
-function VerseComponent({ verse }) {
+function VerseComponent({ verse, chapterNumber, verseNumber }) {
   const {
     id,
     verse_number,
     chapter_number,
     slug,
     text,
-    commentaries,
-    translations,
     transliteration,
+    translations,
   } = verse;
+
+  const router = useRouter();
+
+  const handleNext = () => {
+    const nextVerseNumber = parseInt(verseNumber) + 1;
+    router.push(`/chapter/${chapterNumber}/verse/${nextVerseNumber}`);
+  };
 
   return (
     <div className="verse">
-      <h3 className='font-semibold'>
+      <h3 className="text-xl font-semibold">
         Chapter {chapter_number}, Verse {verse_number}
       </h3>
       <p>{text}</p>
-      
-      <h4 className='font-semibold'>Trans-literation</h4>
-      <p>{transliteration}</p>
 
-      <h4 className='font-semibold'>Commentaries</h4>
-      {/* <ul>
-        {commentaries.map((commentary) => (
-          <li key={commentary.id}>
-            <strong>{commentary.author_name}</strong>: {commentary.description}
-          </li>
-        ))}
-      </ul> */}
+      <h4 className="font-semibold">Transliteration</h4>
+      {/* <p>
+        {translations.map((translate) => {
+          <p>{translate}</p>;
+        })}
+      </p> */}
 
-      <h4 className='font-semibold'>Translations</h4>
-      {/* <ul>
-        {translations.map((translation) => (
-          <li key={translation.id}>
-            <strong>{translation.author_name}</strong> ({translation.language}):{' '}
-            {translation.description}
-          </li>
-        ))}
-      </ul> */}
-
-      <div className='flex items-center justify-center'>
-        <button className='bg-blue border border-gray-500 rounded-md px-1'> Next </button>
+      <div className="flex items-center justify-center mt-4">
+        <button
+          onClick={handleNext}
+          className="bg-blue-500 text-white rounded-md px-4 py-2"
+        >
+          Next
+        </button>
       </div>
     </div>
   );
