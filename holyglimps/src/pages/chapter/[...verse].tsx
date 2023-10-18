@@ -5,24 +5,35 @@ import { useSession } from 'next-auth/react';
 
 const Verse = () => {
   const router = useRouter();
-  const [chapterNumber, setchapterNumber] = useState('');
+  const { verse } = router.query;
+
+  const [chapterNumber, setChapterNumber] = useState('');
   const [verseNumber, setVerseNumber] = useState('');
-  const [versecount, setversecounter] = useState('');
+  const [verseCount, setVerseCount] = useState('');
 
   const { data: session, status } = useSession();
-
-  const { verse } = router.query;
 
   const [data, setData] = useState({});
 
   useEffect(() => {
+    // Handle the case when verse is not defined (initial load or invalid URL)
+    if (!verse) {
+      return;
+    }
+
+    // Parse chapter and verse number from the URL
+    const chapterNumber = verse[0];
+    const verseNumber = verse[2];
+
+    setChapterNumber(chapterNumber);
+    setVerseNumber(verseNumber);
+
     const fetchData = async () => {
       const options = {
         method: 'GET',
         url: `https://bhagavad-gita3.p.rapidapi.com/v2/chapters/${chapterNumber}/verses/${verseNumber}/`,
         headers: {
-          'X-RapidAPI-Key':
-            '5725d40cfemsh0ca35a3e8abe856p1b3effjsn2e6a501084c9',
+          'X-RapidAPI-Key': '5725d40cfemsh0ca35a3e8abe856p1b3effjsn2e6a501084c9',
           'X-RapidAPI-Host': 'bhagavad-gita3.p.rapidapi.com',
         },
       };
@@ -35,39 +46,33 @@ const Verse = () => {
         console.error(error);
       }
     };
-    fetchData();
 
-    function set() {
-      if (verse !== undefined) {
-        const chapterNumber = verse[0];
-        const verseNumber = verse[2];
-        setchapterNumber(chapterNumber);
-        setVerseNumber(verseNumber);
-      }
+    if (chapterNumber !== '' && verseNumber !== '') {
+      fetchData();
     }
-    set();
 
     const fetchDataChapter = async () => {
       const options = {
         method: 'GET',
         url: `https://bhagavad-gita3.p.rapidapi.com/v2/chapters/${chapterNumber}/`,
         headers: {
-          'X-RapidAPI-Key':
-            '5725d40cfemsh0ca35a3e8abe856p1b3effjsn2e6a501084c9',
+          'X-RapidAPI-Key': '5725d40cfemsh0ca35a3e8abe856p1b3effjsn2e6a501084c9',
           'X-RapidAPI-Host': 'bhagavad-gita3.p.rapidapi.com',
-        },
+        }
       };
+        try {
+          const response = await axios.request(options);
+          console.log(response.data);
+          setVerseCount(response.data.verses_count);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+    
+      fetchDataChapter();
+    
 
-      try {
-        const response = await axios.request(options);
-        console.log(response.data);
-        setversecounter(response.data.verses_count)
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchDataChapter();
-  }, [chapterNumber, verse, verseNumber]);
+  }, [chapterNumber, verse]);
 
   if (status === 'unauthenticated') {
     return <p>Access Denied. Please Sign In to Access This Page.</p>;
@@ -77,7 +82,7 @@ const Verse = () => {
     <div className="container mx-auto p-4">
       <header>
         <h1 className="text-2xl font-semibold">Bhagavad Gita</h1>
-        <p>{versecount}</p>
+        <p>{verseCount}</p>
       </header>
       <ShowVerse
         verse={data}
