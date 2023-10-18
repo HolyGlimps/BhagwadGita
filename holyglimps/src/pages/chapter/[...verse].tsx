@@ -4,6 +4,9 @@ import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import SelectVerse from '@/components/selectVerse';
 
+import Providers from '@/components/providers';
+import Toggle from '@/components/toggle-icon';
+
 const Verse = () => {
   const router = useRouter();
   const { verse } = router.query;
@@ -96,6 +99,7 @@ const Verse = () => {
 
   return (
     <>
+    <Providers>
       <div
         className='py-5 fixed w-full z-50 pb-4 border-b border-gray-100 dark:border-gray-800
           backdrop-filter backdrop-blur-lg bg-opacity-30'>
@@ -103,10 +107,15 @@ const Verse = () => {
           <button onClick={handleGoBack} className="font-bold text-xl text-black dark:text-white border border-gray-400 rounded-md px-1">Go Back</button>
           <h2 className=''>Bhagwat Gita</h2>
           <p>Verse: {verseNumber}/{verseCount}</p>
-          <SelectVerse />
-
+            <div className="flex items-center justify-between">
+              <div id="toggle-icon" className="transition duration-500 ease-in-out rounded-full border border-slate-700 mr-4">
+                <Toggle />
+              </div>
+              <SelectVerse />
+            </div>
         </nav>
       </div>
+      </Providers>
 
       <div className="container mx-auto">
         <div className='pt-16 pb-16'>
