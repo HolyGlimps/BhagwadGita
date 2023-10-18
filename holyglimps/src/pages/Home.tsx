@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
+import { HiMoon, HiSun } from "react-icons/hi";
 
 import type { NextPage } from 'next';
 import Head from 'next/head';
@@ -10,6 +11,7 @@ import ChapterSelector from '@/components/chapterselector';
 import styles from '../styles/Home.module.css';
 import { ThemeProvider } from 'next-themes';
 import Providers from "@/components/providers";
+import Toggle from "@/components/toggle-icon";
 
 const Homepage: NextPage = () => {
     const { data: session } = useSession();
@@ -40,10 +42,8 @@ const Homepage: NextPage = () => {
                         <div id="nav-allContents" className="flex justify-between items-center">
                             <a href="#" className="text-black dark:text-white font-semibold text-xl">HolyGlimps</a>
                             <div id="nav-end" className="flex items-center justify-between">
-                                <div>
-                                    <button onClick={() => setTheme("light")}>Light Mode</button>
-                                    <br />
-                                    <button onClick={() => setTheme("dark")}>Dark Mode</button>
+                                <div id="toggle-icon" className="transition duration-500 ease-in-out rounded-full border border-slate-700 mr-4">
+                                    <Toggle />
                                 </div>
                                 <div className={styles.signup}>
                                     {session && session.user ? (
