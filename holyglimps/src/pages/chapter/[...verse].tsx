@@ -12,8 +12,19 @@ const Verse = () => {
   const [verseCount, setVerseCount] = useState('');
 
   const { data: session, status } = useSession();
-
   const [data, setData] = useState({});
+
+  const handleNext = () => {
+    const nextVerseNumber = parseInt(verseNumber) + 1;
+    router.push(`/chapter/${chapterNumber}/verse/${nextVerseNumber}`);
+  };
+  const handlePrev = () => {
+    const nextVerseNumber = parseInt(verseNumber) - 1;
+    router.push(`/chapter/${chapterNumber}/verse/${nextVerseNumber}`);
+  };
+  const handleGoBack = () => {
+    router.push("/chapter/1"); // This will take the user back to the previous page
+  };
 
   useEffect(() => {
     // Handle the case when verse is not defined (initial load or invalid URL)
@@ -60,17 +71,17 @@ const Verse = () => {
           'X-RapidAPI-Host': 'bhagavad-gita3.p.rapidapi.com',
         }
       };
-        try {
-          const response = await axios.request(options);
-          console.log(response.data);
-          setVerseCount(response.data.verses_count);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-    
-      fetchDataChapter();
-    
+      try {
+        const response = await axios.request(options);
+        console.log(response.data);
+        setVerseCount(response.data.verses_count);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchDataChapter();
+
 
   }, [chapterNumber, verse]);
 
@@ -79,17 +90,46 @@ const Verse = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <header>
-        <h1 className="text-2xl font-semibold">Bhagavad Gita</h1>
-        <p>{verseCount}</p>
-      </header>
-      <ShowVerse
-        verse={data}
-        chapterNumber={chapterNumber}
-        verseNumber={verseNumber}
-      />
-    </div>
+    <>
+      <div
+        className='py-5 fixed w-full z-50 pb-4 border-b border-gray-100 dark:border-gray-800
+          backdrop-filter backdrop-blur-lg bg-opacity-30'>
+        <nav className='flex items-center justify-between px-3'>
+          <button onClick={handleGoBack} className="font-bold text-xl text-black dark:text-white border border-gray-400 rounded-md px-1">Go Back</button>
+          <h2 className=''>Bhagwat Gita</h2>
+          <p>Verse: {verseNumber}/{verseCount}</p>
+
+        </nav>
+      </div>
+
+      <div className="container mx-auto">
+        <div className='pt-16 pb-16'>
+          <ShowVerse
+            verse={data}
+            chapterNumber={chapterNumber}
+            verseNumber={verseNumber}
+          />
+        </div>
+      </div>
+
+      <div className='flex items-center justify-center bg-orange-50 dark:bg-slate-800 w-full bottom-0 fixed'>
+        <div className="m-3">
+          <button
+            onClick={handlePrev}
+            className="bg-purple-100 dark:bg-purple-400 border border-gray-500 rounded-md px-1 mr-1"
+          >
+            Previous
+          </button>
+          <button
+            onClick={handleNext}
+            className="bg-purple-200 dark:bg-purple-500 border border-gray-500 rounded-md px-1 ml-1"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+
+    </>
   );
 };
 
@@ -123,24 +163,11 @@ function VerseComponent({ verse, chapterNumber, verseNumber }) {
 
   const router = useRouter();
 
-  const handleNext = () => {
-    const nextVerseNumber = parseInt(verseNumber) + 1;
-    router.push(`/chapter/${chapterNumber}/verse/${nextVerseNumber}`);
-  };
-
-  const handlePrev = () => {
-    const nextVerseNumber = parseInt(verseNumber) - 1;
-    router.push(`/chapter/${chapterNumber}/verse/${nextVerseNumber}`);
-  };
-
   return (
     <>
-      <nav>
-        {/* To Navigate user back and allow them to switch the chapter directly while he is reading a verse */}
-      </nav>
-
       <div className="verse">
-        <h3 className="font-extrabold text-xl">
+
+        <h3 className="font-extrabold text-xl pt-5">
           Chapter {chapter_number}, Verse {verse_number}
         </h3>
         <p className="ml-5 text-2xl">{text}</p>
@@ -177,22 +204,6 @@ function VerseComponent({ verse, chapterNumber, verseNumber }) {
           </ul>
         </div>
 
-        <div className="flex items-center justify-center">
-          <button
-            onClick={handlePrev}
-            className="bg-blue border border-gray-500 rounded-md px-1 mr-1"
-          >
-            {' '}
-            Previous{' '}
-          </button>
-          <button
-            onClick={handleNext}
-            className="bg-blue border border-gray-500 rounded-md px-1 ml-1"
-          >
-            {' '}
-            Next{' '}
-          </button>
-        </div>
       </div>
     </>
   );
