@@ -16,12 +16,16 @@ const Verse = () => {
   const [data, setData] = useState({});
 
   const handleNext = () => {
-    const nextVerseNumber = parseInt(verseNumber) + 1;
-    router.push(`/chapter/${chapterNumber}/verse/${nextVerseNumber}`);
+    if(verseNumber != `${verseCount}`){
+      const nextVerseNumber = parseInt(verseNumber) + 1;
+      router.push(`/chapter/${chapterNumber}/verse/${nextVerseNumber}`);
+    }
   };
   const handlePrev = () => {
-    const nextVerseNumber = parseInt(verseNumber) - 1;
-    router.push(`/chapter/${chapterNumber}/verse/${nextVerseNumber}`);
+    if(verseNumber != '1') {
+      const nextVerseNumber = parseInt(verseNumber) - 1;
+      router.push(`/chapter/${chapterNumber}/verse/${nextVerseNumber}`);
+    }
   };
   const handleGoBack = () => {
     router.push("/chapter/1"); // This will take the user back to the previous page
