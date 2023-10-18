@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
+import SelectVerse from '@/components/selectVerse';
 
 const Verse = () => {
   const router = useRouter();
@@ -98,6 +99,7 @@ const Verse = () => {
           <button onClick={handleGoBack} className="font-bold text-xl text-black dark:text-white border border-gray-400 rounded-md px-1">Go Back</button>
           <h2 className=''>Bhagwat Gita</h2>
           <p>Verse: {verseNumber}/{verseCount}</p>
+          <SelectVerse />
 
         </nav>
       </div>
