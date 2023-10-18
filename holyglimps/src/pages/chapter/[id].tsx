@@ -57,7 +57,7 @@ export default function Page() {
     return (
         <div className="bg-slate-200 dark:bg-cyan-950 h-screen">
             {/* Navigation bar with Go Back button */}
-            <nav className="p-4 text-white ">
+            <nav className="p-4 text-white border-b border-gray-300 dark:border-slate-700">
                 <div className="flex justify-between items-center">
                     <button onClick={handleGoBack} className="font-bold text-xl text-black dark:text-white border border-gray-400 rounded-md px-1">Go Back</button>
                     {/* <a href="#" className="font-bold text-xl">Your App Name</a>
