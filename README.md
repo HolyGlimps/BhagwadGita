@@ -1,3 +1,3 @@
-# HolyGlimps-Client
+# Your one Stop Solution to read BHAGWAD GITA
 
 This Repo Contains the client-code for the project...
