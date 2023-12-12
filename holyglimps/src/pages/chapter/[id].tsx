@@ -14,8 +14,6 @@ export default function Page() {
     const { data: session, status } = useSession()
     const [versecount , setVerseCount] = useRecoilState(verseState);
 
-    
-    
     const router = useRouter();
     const { id } = router.query;
     const [data, setData] = useState(null);
@@ -121,24 +119,23 @@ function ChapterInfo({ data }) {
 
     return (
         <div className="bg-white dark:bg-sky-800 rounded-lg p-6 shadow-md m-11">
-            <h2 className="text-2xl font-semibold text-indigo-700 dark:text-orange-300">{name}</h2>
+            <h2 className="text-4xl font-semibold text-indigo-700 dark:text-orange-300 text-center">{name}</h2>
             <div className="grid grid-cols-2 gap-4 mt-4">
                 <div>
-                    <p className="text-lg text-gray-700 dark:text-white">Chapter Number</p>
-                    <p className="text-xl font-semibold text-gray-700 dark:text-white">{chapter_number}</p>
+                    <p className="text-3xl text-gray-700 dark:text-white">Chapter Number</p>
+                    <p className="text-2xl font-semibold text-gray-700 dark:text-white">{chapter_number}</p>
                 </div>
                 <div>
-                    <p className="text-lg text-gray-700 dark:text-white">Verses Count</p>
-                    <p className="text-xl font-semibold dark:text-white">{verses_count}</p>
+                    <p className="text-3xl text-gray-700 dark:text-white text-right">Verses Count</p>
+                    <p className="text-2xl font-semibold dark:text-white text-right">{verses_count}</p>
                 </div>
             </div>
             <div className="mt-4">
-                <p className="text-lg text-gray-700 dark:text-white">Name Meaning</p>
-                <p className="text-base text-gray-700 dark:text-white">{name_meaning}</p>
+                <p className="text-2xl text-gray-700 dark:text-white text-center">Name Meaning : {name_meaning}</p>
             </div>
-            <div className="mt-4">
-                <p className="text-lg text-gray-700 dark:text-white">Chapter Summary</p>
-                <p className="text-base text-gray-700 dark:text-white">{chapter_summary}</p>
+            <div className="mt-6">
+                <p className="text-2xl text-gray-700 dark:text-white">Chapter Summary</p>
+                <p className="text-lg text-gray-700 dark:text-white ml-8">{chapter_summary}</p>
             </div>
         </div>
     );

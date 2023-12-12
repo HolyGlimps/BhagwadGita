@@ -100,6 +100,7 @@ const Verse = () => {
   return (
     <>
     <Providers>
+      <div className="bg-slate-200 dark:bg-cyan-950 min-h-screen">
       <div
         className='py-5 fixed w-full z-50 pb-4 border-b border-gray-100 dark:border-gray-800
           backdrop-filter backdrop-blur-lg bg-opacity-30'>
@@ -115,7 +116,7 @@ const Verse = () => {
             </div>
         </nav>
       </div>
-      </Providers>
+      
 
       <div className="container mx-auto">
         <div className='pt-16 pb-16'>
@@ -143,7 +144,9 @@ const Verse = () => {
           </button>
         </div>
       </div>
-
+      
+      </div>
+    </Providers>
     </>
   );
 };
@@ -180,20 +183,22 @@ function VerseComponent({ verse, chapterNumber, verseNumber }) {
   return (
     <>
       <div className="verse">
-        <h3 className="font-extrabold text-xl pt-9">
+        <h3 className="font-extrabold text-3xl pt-9 text-center text-yellow-600">
           Chapter {chapter_number}, Verse {verse_number}
         </h3>
-        <p className="ml-7 text-2xl">{text}</p>
-        <p className="ml-7 text-lime-600">{transliteration}</p>
+        <div className='bg-white dark:bg-sky-800 rounded-lg shadow-md text-center mt-5 mb-5 p-7'>
+          <p className="ml-7 text-4xl">{text}</p>
+          <p className="ml-7 text-xl text-lime-600">{transliteration}</p>
+        </div>
 
         {/* Translations always visible */}
-        <div className="border border-gray-300 rounded-md m-2 p-2">
-          <h4 className="font-bold text-xl ml-3">Translations</h4>
+        <div className="bg-white dark:bg-sky-800 rounded-lg m-2 p-6 shadow-md">
+          <h4 className="font-bold text-2xl ml-3 text-center text-blue-400">Translations</h4>
           <ul className="ml-5">
             {translations &&
               translations.map((translation) => (
-                <li key={translation.id} className="p-1">
-                  <strong className="text-orange-600">
+                <li key={translation.id} className="p-1 text-lg">
+                  <strong className="text-orange-500 text-xl">
                     {translation.author_name}
                   </strong>{' '}
                   ({translation.language}): {translation.description}
@@ -203,15 +208,15 @@ function VerseComponent({ verse, chapterNumber, verseNumber }) {
         </div>
 
         {/* Commentaries closed by default but collapsible */}
-        <details className="border border-gray-300 rounded-md m-2 p-2">
-          <summary className="cursor-pointer outline-none font-bold text-xl ml-3">
+        <details className="bg-white dark:bg-sky-800 rounded-lg p-6 shadow-md m-2">
+          <summary className="cursor-pointer outline-none font-bold text-2xl ml-3 text-center text-blue-400">
             Commentaries
           </summary>
           <ul className="ml-5">
             {commentaries &&
               commentaries.map((commentary) => (
-                <li className="p-1" key={commentary.id}>
-                  <strong className="text-orange-600">
+                <li className="p-1 text-lg" key={commentary.id}>
+                  <strong className="text-orange-600 text-xl">
                     {commentary.author_name}
                   </strong>
                   : {commentary.description}

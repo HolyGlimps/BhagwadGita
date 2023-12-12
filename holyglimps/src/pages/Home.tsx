@@ -76,7 +76,6 @@ const Homepage: NextPage = () => {
                                     <p className="text-xl font-semibold text-blue-500 pb-2">You need to sign in to start reading Bhagwat Gita</p>
                                     <button className="text-black dark:text-white border border-gray-400 dark:border-gray-700 rounded-md px-1 font-bold text-xl bg-blue-500" onClick={() => signIn()}>Sign in</button>
                                 </>
-
                             )}
                         </div>
                     </main>
