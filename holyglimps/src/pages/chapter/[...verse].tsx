@@ -183,16 +183,17 @@ function VerseComponent({ verse, chapterNumber, verseNumber }) {
   return (
     <>
       <div className="verse">
-        <h3 className="font-extrabold text-3xl pt-9 text-center text-yellow-600">
+        <h3 className="font-extrabold text-4xl pt-9 text-center
+        text-indigo-700 dark:text-orange-300">
           Chapter {chapter_number}, Verse {verse_number}
         </h3>
-        <div className='bg-white dark:bg-sky-800 rounded-lg shadow-md text-center mt-5 mb-5 p-7'>
+        <div className='bg-white dark:bg-sky-800 rounded-lg shadow-md text-center mt-5 mb-5 p-6'>
           <p className="ml-7 text-4xl">{text}</p>
           <p className="ml-7 text-xl text-lime-600">{transliteration}</p>
         </div>
 
         {/* Translations always visible */}
-        <div className="bg-white dark:bg-sky-800 rounded-lg m-2 p-6 shadow-md">
+        <div className="bg-white dark:bg-sky-800 rounded-lg m-2 p-3 pb-4 shadow-md">
           <h4 className="font-bold text-2xl ml-3 text-center text-blue-400">Translations</h4>
           <ul className="ml-5">
             {translations &&
@@ -208,7 +209,7 @@ function VerseComponent({ verse, chapterNumber, verseNumber }) {
         </div>
 
         {/* Commentaries closed by default but collapsible */}
-        <details className="bg-white dark:bg-sky-800 rounded-lg p-6 shadow-md m-2">
+        <details className="bg-white dark:bg-sky-800 rounded-lg p-3 pb-4 shadow-md m-2">
           <summary className="cursor-pointer outline-none font-bold text-2xl ml-3 text-center text-blue-400">
             Commentaries
           </summary>
