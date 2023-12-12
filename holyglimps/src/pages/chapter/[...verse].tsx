@@ -176,6 +176,8 @@ function VerseComponent({ verse, chapterNumber, verseNumber }) {
     commentaries,
   } = verse;
 
+  console.log(verse)
+
   const router = useRouter();
 
   return (

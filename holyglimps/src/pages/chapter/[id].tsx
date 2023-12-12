@@ -7,13 +7,23 @@ import { useState, useEffect } from 'react';
 import ChapterSelector from '@/components/chapterselector';
 import Providers from '@/components/providers';
 import Toggle from '@/components/toggle-icon';
+import {verseState} from '../../store/store';
+import { useRecoilState } from 'recoil';
 
 export default function Page() {
     const { data: session, status } = useSession()
+    const [versecount , setVerseCount] = useRecoilState(verseState);
 
+    
+    
     const router = useRouter();
     const { id } = router.query;
     const [data, setData] = useState(null);
+
+    if(data){
+        setVerseCount(data.verses_count);
+    }
+    
     console.log(router.query.id)
 
     useEffect(() => {

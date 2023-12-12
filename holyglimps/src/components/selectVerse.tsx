@@ -5,18 +5,25 @@ import {chapterState} from '@/store/store';
 import {verseState}  from '@/store/store';
 function SelectVerse() {
      const router = useRouter();
-     const [selectedChapter, setSelectedChapter] = useRecoilState(chapterState);
      const [verseCount, setVerseCount] = useState('');
+
+     
      const chapter = useRecoilValue(chapterState);
+     const verse = useRecoilValue(verseState)
+
+     const chapterNumber = parseInt(chapter);
+     const verseNumber = parseInt(verse);
+
+     // console.log(chapterNumber)
+
+
      const handleSelectVerse = (event) => {
-          // const chapter = event.target.value;
-          // console.log(chapter);
-          // setSelectedChapter(chapter);
           const verse = event.target.value;
           console.log(verse);          
           setVerseCount(verse);
+
           if (verse) {
-               router.push(`/chapter/${chapter}/verse/${verse}`); // Use your desired URL format
+               router.push(`/chapter/${chapterNumber}/verse/${verse}`); // Use your desired URL format
           }
      };
 
@@ -27,7 +34,7 @@ function SelectVerse() {
                onChange={handleSelectVerse}
           >
                <option value="" disabled hidden>Select a Verse</option>
-               {Array.from({ length: 18 }, (_, i) => ( // Required -> length : {verseCount}
+               {Array.from({ length: verseNumber }, (_, i) => ( // Required -> length : {verseCount}
                     <option key={i} value={`${i + 1}`}>
                          Verse {i + 1}
                     </option>
@@ -37,3 +44,5 @@ function SelectVerse() {
 }
 
 export default SelectVerse;
+
+// Hello 

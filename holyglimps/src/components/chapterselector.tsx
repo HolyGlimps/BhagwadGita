@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import { chapterState } from '@/store/store';
+import { useRecoilState } from 'recoil';
 
 function ChapterSelector() {
     const router = useRouter();
-    const [selectedChapter, setSelectedChapter] = useState('');
+    const [selectedChapter, setSelectedChapter] = useRecoilState(chapterState);
 
     const handleChapterSelect = (event) => {
         const chapter = event.target.value;

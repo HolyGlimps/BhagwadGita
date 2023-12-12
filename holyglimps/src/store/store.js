@@ -9,3 +9,4 @@ export const verseState = atom({
      key:"verseState",
      default:''
 })
+  
