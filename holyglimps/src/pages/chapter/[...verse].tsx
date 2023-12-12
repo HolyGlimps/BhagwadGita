@@ -31,7 +31,7 @@ const Verse = () => {
     }
   };
   const handleGoBack = () => {
-    router.push("/chapter/1"); // This will take the user back to the previous page
+    router.push(`/chapter/${chapterNumber}`); // This will take the user back to the previous page
   };
 
   useEffect(() => {
@@ -103,7 +103,7 @@ const Verse = () => {
       <div className="bg-slate-200 dark:bg-cyan-950 min-h-screen">
       <div
         className='py-5 fixed w-full z-50 pb-4 border-b border-gray-100 dark:border-gray-800
-          backdrop-filter backdrop-blur-lg bg-opacity-30'>
+          backdrop-filter backdrop-blur bg-opacity-30'>
         <nav className='flex items-center justify-between px-3'>
           <button onClick={handleGoBack} className="font-bold text-xl text-black dark:text-white border border-gray-400 rounded-md px-1">Go Back</button>
           <h2 className=''>Bhagwat Gita</h2>
@@ -128,7 +128,9 @@ const Verse = () => {
         </div>
       </div>
 
-      <div className='flex items-center justify-center bg-orange-50 dark:bg-slate-800 w-full bottom-0 fixed'>
+      <div className='flex items-center justify-center w-full bottom-0 fixed
+      border-gray-100 dark:border-gray-800
+      backdrop-filter backdrop-blur bg-opacity-30'>
         <div className="m-3">
           <button
             onClick={handlePrev}
@@ -193,8 +195,9 @@ function VerseComponent({ verse, chapterNumber, verseNumber }) {
         </div>
 
         {/* Translations always visible */}
-        <div className="bg-white dark:bg-sky-800 rounded-lg m-2 p-3 pb-4 shadow-md">
-          <h4 className="font-bold text-2xl ml-3 text-center text-blue-400">Translations</h4>
+        <div className="bg-white dark:bg-sky-800 rounded-lg m-2 p-3 pb-4 shadow-md mb-2">
+          <h4 className="font-bold text-2xl ml-3 text-center
+          text-indigo-800 dark:text-sky-100">Translations</h4>
           <ul className="ml-5">
             {translations &&
               translations.map((translation) => (
@@ -209,8 +212,9 @@ function VerseComponent({ verse, chapterNumber, verseNumber }) {
         </div>
 
         {/* Commentaries closed by default but collapsible */}
-        <details className="bg-white dark:bg-sky-800 rounded-lg p-3 pb-4 shadow-md m-2">
-          <summary className="cursor-pointer outline-none font-bold text-2xl ml-3 text-center text-blue-400">
+        <details className="bg-white dark:bg-sky-800 rounded-lg p-3 pb-4 shadow-md mt-3 m-2">
+          <summary className="cursor-pointer outline-none font-bold text-2xl ml-3 text-center
+          text-indigo-800 dark:text-sky-100">
             Commentaries
           </summary>
           <ul className="ml-5">
