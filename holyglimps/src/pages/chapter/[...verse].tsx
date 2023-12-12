@@ -163,7 +163,6 @@ const ShowVerse = ({ verse, chapterNumber, verseNumber }) => {
     />
   );
 };
-
 function VerseComponent({ verse, chapterNumber, verseNumber }) {
   const {
     id,
@@ -176,23 +175,20 @@ function VerseComponent({ verse, chapterNumber, verseNumber }) {
     commentaries,
   } = verse;
 
-  console.log(verse)
-
   const router = useRouter();
 
   return (
     <>
       <div className="verse">
-
-        <h3 className="font-extrabold text-xl pt-5">
+        <h3 className="font-extrabold text-xl pt-9">
           Chapter {chapter_number}, Verse {verse_number}
         </h3>
-        <p className="ml-5 text-2xl">{text}</p>
-        {/* <h4 className='font-semibold'>Trans-literation</h4> */}
-        <p className="ml-5 text-lime-600">{transliteration}</p>
+        <p className="ml-7 text-2xl">{text}</p>
+        <p className="ml-7 text-lime-600">{transliteration}</p>
 
-        <div className="border border-gray-300 rounded-md m-2">
-          <h4 className="font-bold text-xl pt-2 ml-3">Translations</h4>
+        {/* Translations always visible */}
+        <div className="border border-gray-300 rounded-md m-2 p-2">
+          <h4 className="font-bold text-xl ml-3">Translations</h4>
           <ul className="ml-5">
             {translations &&
               translations.map((translation) => (
@@ -206,8 +202,11 @@ function VerseComponent({ verse, chapterNumber, verseNumber }) {
           </ul>
         </div>
 
-        <div className="border border-gray-300 rounded-md m-2">
-          <h3 className="font-bold text-xl pt-1 ml-3">Commentaries</h3>
+        {/* Commentaries closed by default but collapsible */}
+        <details className="border border-gray-300 rounded-md m-2 p-2">
+          <summary className="cursor-pointer outline-none font-bold text-xl ml-3">
+            Commentaries
+          </summary>
           <ul className="ml-5">
             {commentaries &&
               commentaries.map((commentary) => (
@@ -219,8 +218,7 @@ function VerseComponent({ verse, chapterNumber, verseNumber }) {
                 </li>
               ))}
           </ul>
-        </div>
-
+        </details>
       </div>
     </>
   );
