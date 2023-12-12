@@ -7,21 +7,21 @@ import { useState, useEffect } from 'react';
 import ChapterSelector from '@/components/chapterselector';
 import Providers from '@/components/providers';
 import Toggle from '@/components/toggle-icon';
-import {verseState} from '../../store/store';
+import { verseState } from '../../store/store';
 import { useRecoilState } from 'recoil';
 
 export default function Page() {
     const { data: session, status } = useSession()
-    const [versecount , setVerseCount] = useRecoilState(verseState);
+    const [versecount, setVerseCount] = useRecoilState(verseState);
 
     const router = useRouter();
     const { id } = router.query;
     const [data, setData] = useState(null);
 
-    if(data){
+    if (data) {
         setVerseCount(data.verses_count);
     }
-    
+
     console.log(router.query.id)
 
     useEffect(() => {
@@ -60,7 +60,7 @@ export default function Page() {
         router.push("/"); // This will take the user back to the previous page
     };
 
-    const handleStartReading = () =>{
+    const handleStartReading = () => {
         router.push(`/chapter/${id}/verse/1`)
     }
 
@@ -73,12 +73,12 @@ export default function Page() {
                         <button onClick={handleGoBack} className="font-bold text-xl text-black dark:text-white border border-gray-400 rounded-md px-1">Go Back</button>
                         {/* <a href="#" className="font-bold text-xl">Your App Name</a>
                     <a href="#" className="font-bold text-xl">Some Other Option</a> */}
-                    <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between">
                             <div id="toggle-icon" className="transition duration-500 ease-in-out rounded-full border border-slate-700 mr-4">
                                 <Toggle />
                             </div>
-                        <ChapterSelector />
-                    </div>
+                            <ChapterSelector />
+                        </div>
                     </div>
                 </nav>
 
@@ -92,7 +92,7 @@ export default function Page() {
                         </div>
                     </div>
                 ) : (
-                    <p>Loading data...</p>
+                    <p className='text-3xl h-screen flex items-center justify-center'>Loading data...</p>
                 )}
             </div>
         </Providers>
@@ -140,5 +140,3 @@ function ChapterInfo({ data }) {
         </div>
     );
 }
-
-
