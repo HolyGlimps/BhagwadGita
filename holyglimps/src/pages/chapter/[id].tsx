@@ -50,9 +50,9 @@ export default function Page() {
         fetchData();
     }, [id]); // Run the effect once when the component mounts
 
-    if (status === "unauthenticated") {
-        return <p>Access Denied Please Sign In to Access This Page</p>
-    }
+    // if (status === "unauthenticated") {
+    //     return <p>Access Denied Please Sign In to Access This Page</p>
+    // }
 
 
     // Define a function to handle the "Go Back" button click

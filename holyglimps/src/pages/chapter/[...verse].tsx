@@ -93,9 +93,9 @@ const Verse = () => {
 
   }, [chapterNumber, verse]);
 
-  if (status === 'unauthenticated') {
-    return <p>Access Denied. Please Sign In to Access This Page.</p>;
-  }
+  // if (status === 'unauthenticated') {
+  //   return <p>Access Denied. Please Sign In to Access This Page.</p>;
+  // }
 
   return (
     <>

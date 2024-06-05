@@ -45,24 +45,16 @@ const Homepage: NextPage = () => {
                                 <div id="toggle-icon" className="transition duration-500 ease-in-out rounded-full border border-slate-700 mr-4">
                                     <Toggle />
                                 </div>
-                                <div className={styles.signup}>
-                                    {session && session.user ? (
-                                        <button className="text-black dark:text-white font-semibold text-xl bg-blue-500 rounded-md px-2 py-1 border border-gray-400 dark:border-gray-700" onClick={() => signOut()}>Sign out</button>
-                                    ) : (
-                                        <button className="text-black dark:text-white font-semibold text-xl bg-blue-500 rounded-md px-2 py-1 border border-gray-400 dark:border-gray-700" onClick={() => signIn()}>Sign in</button>
-                                    )}
-                                </div>
                             </div>
                         </div>
                     </nav>
 
                     <main className="flex-grow flex items-center justify-center">
                         <div className="text-center">
-                            {session && session.user ? (
+                            {/* {session && session.user ? ( */}
                                 <div>
                                     <div className="mb-4 rounded-lg bg-lime-500 px-6 py-5">
-                                        <h4 className="mb-2 text-2xl font-medium">Success!</h4>
-                                        <p className="mb-4"> Hey {session.user.name}, happy you logged in with {session.user.email} </p>
+                                        <p className="mb-4"> Hey, happy to See you Here!</p>
                                         <hr className="opacity-30" />
                                         <p className="mb-0 mt-4"> Get Ready to read the ultimate bhagwat gita </p>
                                     </div>
@@ -71,12 +63,6 @@ const Homepage: NextPage = () => {
                                         <ChapterSelector />
                                     </div>
                                 </div>
-                            ) : (
-                                <>
-                                    <p className="text-xl font-semibold text-blue-500 pb-2">You need to sign in to start reading Bhagwat Gita</p>
-                                    <button className="text-black dark:text-white border border-gray-400 dark:border-gray-700 rounded-md px-1 font-bold text-xl bg-blue-500" onClick={() => signIn()}>Sign in</button>
-                                </>
-                            )}
                         </div>
                     </main>
 
