@@ -9,7 +9,7 @@ export const useVerseNavigation = (chapterNumber: string | number, verseNumber: 
 
     if (currentVerse < maxVerse) {
       const nextVerseNumber = currentVerse + 1;
-      router.push(`/chapter/${chapterNumber}/verse/${nextVerseNumber}`);
+      router.push(`/chapters/${chapterNumber}/verse/${nextVerseNumber}`);
     }
   };
 
@@ -18,12 +18,12 @@ export const useVerseNavigation = (chapterNumber: string | number, verseNumber: 
 
     if (currentVerse > 1) {
       const prevVerseNumber = currentVerse - 1;
-      router.push(`/chapter/${chapterNumber}/verse/${prevVerseNumber}`);
+      router.push(`/chapters/${chapterNumber}/verse/${prevVerseNumber}`);
     }
   };
 
   const handleGoBack = () => {
-    router.push(`/chapter/${chapterNumber}`);
+    router.push(`/chapters/${chapterNumber}`);
   };
 
   const isFirstVerse = parseInt(verseNumber as string) === 1;

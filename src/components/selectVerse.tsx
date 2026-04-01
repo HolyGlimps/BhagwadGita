@@ -18,7 +18,7 @@ function SelectVerse() {
           setSelectedVerse(verse);
 
           if (verse) {
-               router.push(`/chapter/${chapterNumber}/verse/${verse}`);
+               router.push(`/chapters/${chapterNumber}/verse/${verse}`);
           }
      };
 

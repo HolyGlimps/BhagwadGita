@@ -1,6 +1,10 @@
 import Link from 'next/link';
 import { useRecoilValue } from 'recoil';
 import { chapterState, verseState } from '@/store/store';
+import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useSession } from 'next-auth/react';
 
 interface ActionCard {
   icon: string;
@@ -10,11 +14,47 @@ interface ActionCard {
   highlight: boolean;
 }
 
-export default function QuickActions() {
-  const lastChapter = useRecoilValue(chapterState);
-  const lastVerse = useRecoilValue(verseState);
+interface ReadingProgress {
+  lastChapter?: number;
+  lastVerse?: number;
+  totalRead?: number;
+}
 
-  // Determine if user has reading history
+export default function QuickActions() {
+  const { data: session } = useSession();
+  const recoilLastChapter = useRecoilValue(chapterState);
+  const recoilLastVerse = useRecoilValue(verseState);
+  const { ref, isVisible } = useFadeInOnScroll();
+
+  // Track reading progress from database
+  const [readingProgress, setReadingProgress] = useState<ReadingProgress | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchReadingProgress = async () => {
+      try {
+        const response = await axios.get<ReadingProgress>('/api/reading-progress');
+        setReadingProgress(response.data);
+      } catch (error) {
+        console.error('Failed to fetch reading progress:', error);
+
+        // Fall back to Recoil state if API fails
+        setReadingProgress({
+          lastChapter: recoilLastChapter ? Number(recoilLastChapter) : 1,
+          lastVerse: recoilLastVerse ? Number(recoilLastVerse) : 1,
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (session) {
+      fetchReadingProgress();
+    }
+  }, [session?.user]);
+
+  const lastChapter = readingProgress?.lastChapter || recoilLastChapter || 1;
+  const lastVerse = readingProgress?.lastVerse || recoilLastVerse || 1;
   const hasContinueOption = lastChapter && lastVerse;
 
   const actions: ActionCard[] = [
@@ -22,16 +62,9 @@ export default function QuickActions() {
       icon: '📖',
       title: 'Continue Reading',
       description: `Last verse: ${lastChapter}.${lastVerse}`,
-      href: `/chapter/${lastChapter}/${lastVerse}`,
+      href: `/chapters/${lastChapter}/verse/${lastVerse}`,
       highlight: true,
     }] : []),
-    {
-      icon: '🔍',
-      title: 'Search Verses',
-      description: 'Find verses by keyword or theme',
-      href: '/search',
-      highlight: false,
-    },
     {
       icon: '📚',
       title: 'Browse Chapters',
@@ -39,18 +72,12 @@ export default function QuickActions() {
       href: '/chapters',
       highlight: false,
     },
-    {
-      icon: '✨',
-      title: 'Random Verse',
-      description: 'Discover a verse by chance',
-      href: '/random',
-      highlight: false,
-    },
   ];
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+    <section ref={ref} className={`py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto w-full transition-opacity duration-700 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
         {actions.map((action, idx) => (
           <Link
             key={idx}
@@ -59,7 +86,7 @@ export default function QuickActions() {
               group p-6 sm:p-8 rounded-lg border-2 transition-all duration-200
               ${action.highlight
                 ? 'border-amber-600 dark:border-amber-500 bg-amber-50 dark:bg-amber-950/30 hover:shadow-lg hover:shadow-amber-200 dark:hover:shadow-amber-900/50'
-                : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 hover:border-amber-400 dark:hover:border-amber-500/50 hover:shadow-md hover:shadow-gray-300 dark:hover:shadow-gray-800'
+                : 'border-gray-200 dark:border-gray-800 hover:border-amber-400 dark:hover:border-amber-500/50 hover:shadow-md hover:shadow-gray-300 dark:hover:shadow-gray-800'
               }
             `}
           >

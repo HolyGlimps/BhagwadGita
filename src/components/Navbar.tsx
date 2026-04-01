@@ -1,44 +1,124 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Toggle from '@/components/toggle-icon';
+import UserMenu from '@/components/UserMenu';
+import { useSession } from 'next-auth/react';
+import axios from 'axios';
+import { Button } from '@/components/ui';
+import { ChevronDown } from 'lucide-react';
 
-/**
- * Modern Navigation Bar
- * Minimal, distraction-free navbar with warm accents
- * Mobile-first responsive design
- */
+interface Chapter {
+  id: number;
+  chapter_number: number;
+  name: string;
+  summary?: string;
+}
+
 const Navbar: React.FC = () => {
+  const [showChaptersMenu, setShowChaptersMenu] = useState(false);
+  const [chapters, setChapters] = useState<Chapter[]>([]);
+  const [loadingChapters, setLoadingChapters] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (showChaptersMenu && chapters.length === 0) {
+      setLoadingChapters(true);
+      axios
+        .get('/api/chapters')
+        .then((res) => {
+          setChapters(res.data.data || res.data);
+        })
+        .catch((err) => console.error('Failed to fetch chapters:', err))
+        .finally(() => setLoadingChapters(false));
+    }
+  }, [showChaptersMenu, chapters.length]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowChaptersMenu(false);
+      }
+    };
+
+    if (showChaptersMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showChaptersMenu]);
+
   return (
-    <nav className="sticky top-0 z-40 border-b border-gray-200 dark:border-gray-800/50 backdrop-blur-sm bg-white/90 dark:bg-slate-950/90">
+    <nav className="sticky top-0 z-40 border-b border-gray-200 dark:border-gray-800/50 backdrop-blur-sm bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
         <div className="flex items-center justify-between">
-          {/* Brand/Logo - with warm accent on hover */}
           <Link href="/" className="group flex items-center gap-2">
-            <span className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white transition-colors group-hover:text-amber-700 dark:group-hover:text-amber-400">
+            <span className="text-lg sm:text-xl transition-colors group-hover:text-amber-700 dark:group-hover:text-amber-400">
               Bhagavad Gita
             </span>
             <span className="text-amber-600 dark:text-amber-500/60 transition-opacity group-hover:opacity-100 opacity-0 text-xs">✧</span>
           </Link>
 
-          {/* Theme Toggle */}
+          {/* Theme Toggle & User Menu */}
           <div className="flex items-center gap-4 sm:gap-6">
-            <nav className="hidden sm:flex items-center gap-6">
-              <Link
-                href="#verse"
-                className="text-sm text-gray-600 dark:text-gray-400 hover:text-amber-700 dark:hover:text-amber-400 transition-colors"
-              >
-                Today's Verse
-              </Link>
-              <Link
-                href="/chapters"
-                className="text-sm text-gray-600 dark:text-gray-400 hover:text-amber-700 dark:hover:text-amber-400 transition-colors"
-              >
-                Chapters
-              </Link>
+            <nav className="hidden sm:flex items-center gap-6 relative" ref={menuRef}>
+              {/* Chapters Dropdown */}
+              <div className="relative">
+                <Button
+                  onClick={() => setShowChaptersMenu(!showChaptersMenu)}
+                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-amber-700 dark:hover:text-amber-400 transition-colors flex items-center gap-1"
+                >
+                  Chapters
+                  <ChevronDown
+                    className={`w-4 h-4 transition-transform ${showChaptersMenu ? 'rotate-180' : ''}`}
+                  />
+                </Button>
+
+                {/* Dropdown Menu */}
+                {showChaptersMenu && (
+                  <div className="absolute top-full right-0 mt-1 w-72 rounded-lg bg-white dark:bg-slate-950 border border-gray-200 dark:border-gray-700 shadow-xl p-2 max-h-96 overflow-y-auto z-50">
+                    {/* All Chapters Option */}
+                    <Link
+                      href="/chapters"
+                      onClick={() => setShowChaptersMenu(false)}
+                      className="block w-full text-left px-3 py-2 rounded-md text-sm font-semibold text-amber-700 dark:text-amber-400 hover:bg-muted transition-colors mb-2 border-b border-gray-200 dark:border-gray-700 pb-2"
+                    >
+                      📖 View All Chapters
+                    </Link>
+
+                    {/* Individual Chapters */}
+                    {loadingChapters ? (
+                      <div className="px-3 py-2 text-xs text-gray-500 text-center">Loading...</div>
+                    ) : chapters.length === 0 ? (
+                      <div className="px-3 py-2 text-xs text-gray-500 text-center">No chapters found</div>
+                    ) : (
+                      chapters.map((chapter) => (
+                        <Link
+                          key={chapter.id}
+                          href={`/chapters/${chapter.chapter_number}`}
+                          onClick={() => setShowChaptersMenu(false)}
+                          className="block w-full text-left px-3 py-2 rounded-md text-sm hover:bg-muted transition-colors"
+                        >
+                          <div className="font-medium text-gray-900 dark:text-white">
+                            Chapter {chapter.chapter_number}: {chapter.name}
+                          </div>
+                          {chapter.summary && (
+                            <div className="text-xs text-gray-600 dark:text-gray-400 line-clamp-1">
+                              {chapter.summary}
+                            </div>
+                          )}
+                        </Link>
+                      ))
+                    )}
+                  </div>
+                )}
+              </div>
             </nav>
-            <div className="transition-transform hover:scale-110">
-              <Toggle />
-            </div>
+
+            <Toggle />
+
+            <UserMenu />
           </div>
         </div>
       </div>

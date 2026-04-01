@@ -23,9 +23,21 @@ export default [
           jsx: true,
         },
       },
+      env: {
+        browser: true,
+        node: true,
+      },
       globals: {
         console: "readonly",
         process: "readonly",
+        setTimeout: "readonly",
+        setInterval: "readonly",
+        clearTimeout: "readonly",
+        clearInterval: "readonly",
+        HTMLDivElement: "readonly",
+        MouseEvent: "readonly",
+        Event: "readonly",
+        Node: "readonly",
       },
     },
     rules: {

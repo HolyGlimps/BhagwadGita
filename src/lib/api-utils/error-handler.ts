@@ -6,10 +6,6 @@ interface ErrorResponse {
   statusCode?: number;
 }
 
-/**
- * Standardized API error handler
- * Catches different error types and returns consistent error responses
- */
 export function handleError(error: any, res: NextApiResponse<ErrorResponse>): void {
   const statusCode = error.response?.status || 500;
   const errorMessage = error.message || 'Internal server error';
@@ -46,9 +42,6 @@ export function handleError(error: any, res: NextApiResponse<ErrorResponse>): vo
   });
 }
 
-/**
- * Handle validation errors
- */
 export function handleValidationError(
   message: string,
   res: NextApiResponse<ErrorResponse>
