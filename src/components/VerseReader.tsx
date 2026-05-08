@@ -51,15 +51,15 @@ const VerseReader: React.FC<VerseReaderProps> = ({
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Reading Container */}
-      <main className="flex-1 max-w-4xl mx-auto w-full px-6 py-12 space-y-12">
+      <main className="flex-1 max-w-5xl mx-auto w-full px-6 py-12 pt-4 space-y-6">
         {/* Header with Gradient Accent */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-3 pb-4 border-b-2 border-transparent bg-gradient-to-r from-amber-400/30 to-amber-600/30 dark:from-amber-600/20 dark:to-amber-800/20 p-4 rounded-lg">
-            <span className="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-widest">
+        <div className="space-y-2">
+          <div className="flex items-center gap-3 border-b-2 border-transparent bg-gradient-to-r from-amber-400/30 to-amber-600/30 dark:from-amber-600/20 dark:to-amber-800/20 py-2 px-8 rounded-lg">
+            <span className="text-sm font-bold text-center text-amber-700 dark:text-amber-400 uppercase tracking-widest">
               Chapter {chapterNumber}
             </span>
             <span className="text-amber-600/40 dark:text-amber-600/60">•</span>
-            <span className="text-xl md:text-2xl font-semibold font-serif text-gray-900 dark:text-white">
+            <span className="text-md md:text-lg font-semibold text-gray-900 dark:text-white uppercase tracking-wider">
               Verse {verseNumber}
             </span>
             <span className="ml-auto text-xs font-medium text-gray-500 dark:text-gray-500">
@@ -69,12 +69,12 @@ const VerseReader: React.FC<VerseReaderProps> = ({
         </div>
 
         {/* Main Verse Content - Documentation Hero */}
-        <div className="space-y-8">
+        <div className="space-y-4">
           {/* Sanskrit Text - Large Serif Hero */}
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-br from-amber-50/50 to-transparent dark:from-amber-950/30 dark:to-transparent rounded-xl blur-xl opacity-40" />
-            <div className="relative bg-gradient-to-br from-amber-50/30 to-amber-100/20 dark:from-amber-950/20 dark:to-slate-900/30 p-8 rounded-xl border border-amber-200/40 dark:border-amber-900/30">
-              <p className="text-2xl md:text-4xl lg:text-5xl font-amita text-center leading-loose text-gray-900 dark:text-white tracking-tight">
+            <div className="relative bg-gradient-to-br from-amber-50/30 to-amber-100/20 dark:from-amber-950/20 dark:to-slate-900/30 p-4 rounded-xl border border-amber-200/40 dark:border-amber-900/30">
+              <p className="text-xl md:text-2xl lg:text-3xl text-center font-devanagari leading-loose text-gray-900 dark:text-white tracking-tight italic">
                 {text}
               </p>
             </div>
@@ -90,7 +90,7 @@ const VerseReader: React.FC<VerseReaderProps> = ({
           )}
 
           {/* Inline Navigation Hints */}
-          <div className="flex items-center justify-center gap-6 pt-4">
+          <div className="flex items-center justify-center gap-4">
             <button
               onClick={onPrev}
               disabled={!canGoPrev}
@@ -123,18 +123,18 @@ const VerseReader: React.FC<VerseReaderProps> = ({
 
         {/* Interpretations Section */}
         {translations && translations.length > 0 && (
-          <div className="pt-6 border-t border-gray-200 dark:border-slate-800">
+          <div className="pt-4 border-t border-gray-200 dark:border-slate-800">
             <div className="mb-4">
-              <h2 className="text-lg md:text-xl font-sans font-semibold uppercase tracking-wider">
+              <h2 className="text-md md:text-lg font-sans font-semibold uppercase tracking-widest">
                 Interpretations
               </h2>
-              <p className="text-sm text-gray-600 dark:text-gray-400 opacity-50">
+              <p className="text-xs text-gray-600 dark:text-gray-400 opacity-50">
                 Explore multiple scholarly perspectives on this verse's meaning
               </p>
             </div>
 
             {/* Scholar Tabs */}
-            <div className="border-b border-gray-200 dark:border-slate-700 mb-6">
+            <div className="border-b border-gray-200 dark:border-slate-700 mb-4">
               <div className="flex overflow-x-auto scrollbar-hide overflow-y-hidden">
                 {translations.map((translation, index) => (
                   <button
@@ -153,12 +153,9 @@ const VerseReader: React.FC<VerseReaderProps> = ({
 
             {/* Active Translation - Callout Box */}
             {activeTranslation && (
-              <div className="bg-card border border-amber-200/50 dark:border-amber-900/40 rounded-lg p-6 space-y-4">
-                <div className="space-y-4">
-                  <p className="text-base md:text-lg leading-relaxed text-gray-900 dark:text-gray-100 font-martel">
-                    "{activeTranslation.description}"
-                  </p>
-                  <div className="pt-2 flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
+              <div className="bg-card border border-amber-200/50 dark:border-amber-900/40 rounded-lg py-5 px-6 space-y-4">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
                     <div className="flex flex-col gap-1">
                       <span className="font-medium">
                         {activeTranslation.author_name}
@@ -173,6 +170,9 @@ const VerseReader: React.FC<VerseReaderProps> = ({
                       {activeTranslationIndex + 1} of {translations.length}
                     </span>
                   </div>
+                  <p className="text-base md:text-md leading-relaxed text-gray-900 dark:text-gray-100 font-medium italic">
+                    "{activeTranslation.description}"
+                  </p>
                 </div>
               </div>
             )}
@@ -181,18 +181,18 @@ const VerseReader: React.FC<VerseReaderProps> = ({
 
         {/* Commentaries Section */}
         {commentaries && commentaries.length > 0 && (
-          <div className="pt-6 border-t border-gray-200 dark:border-slate-800">
+          <div className="pt-4 border-t border-gray-200 dark:border-slate-800">
             <div className="mb-4">
-              <h2 className="text-lg md:text-xl font-sans font-semibold uppercase tracking-wider">
+              <h2 className="text-md md:text-lg font-sans font-semibold uppercase tracking-widest">
                 Deeper Insights
               </h2>
-              <p className="text-sm text-gray-600 dark:text-gray-400 opacity-50">
+              <p className="text-xs text-gray-600 dark:text-gray-400 opacity-50">
                 Scholarly commentary to deepen your understanding of this verse
               </p>
             </div>
 
             {/* Scholar Tabs */}
-            <div className="border-b border-gray-200 dark:border-slate-700 mb-6">
+            <div className="border-b border-gray-200 dark:border-slate-700 mb-4">
               <div className="flex overflow-x-auto scrollbar-hide overflow-y-hidden">
                 {commentaries.map((commentary, index) => (
                   <button
@@ -211,12 +211,9 @@ const VerseReader: React.FC<VerseReaderProps> = ({
 
             {/* Active Commentary - Callout Box */}
             {activeCommentary && (
-              <div className="bg-card border border-amber-200/50 dark:border-amber-900/40 rounded-lg p-6 space-y-4">
-                <div className="space-y-4">
-                  <p className="text-base md:text-lg leading-relaxed text-gray-900 dark:text-gray-100 font-eczar">
-                    {activeCommentary.description}
-                  </p>
-                  <div className="pt-2 flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
+              <div className="bg-card border border-amber-200/50 dark:border-amber-900/40 rounded-lg py-5 px-6 space-y-4">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
                     <div className="flex flex-col gap-1">
                       <span className="font-medium">
                         {activeCommentary.author_name}
@@ -231,6 +228,9 @@ const VerseReader: React.FC<VerseReaderProps> = ({
                       {activeCommentaryIndex + 1} of {commentaries.length}
                     </span>
                   </div>
+                  <p className="text-base md:text-md leading-relaxed text-gray-900 dark:text-gray-100 font-medium italic">
+                    "{activeCommentary.description}"
+                  </p>
                 </div>
               </div>
             )}

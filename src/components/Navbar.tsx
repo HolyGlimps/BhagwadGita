@@ -53,14 +53,13 @@ const Navbar: React.FC = () => {
     <nav className="sticky top-0 z-40 border-b border-gray-200 dark:border-gray-800/50 backdrop-blur-sm bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
         <div className="flex items-center justify-between">
-          <Link href="/" className="group flex items-center gap-2">
-            <span className="text-lg sm:text-xl transition-colors group-hover:text-amber-700 dark:group-hover:text-amber-400">
+          <Link href="/" className="group flex items-center gap-2 font-amita">
+            <span className="text-xl sm:text-2xl transition-colors group-hover:text-amber-700 dark:group-hover:text-amber-400">
               Bhagavad Gita
             </span>
             <span className="text-amber-600 dark:text-amber-500/60 transition-opacity group-hover:opacity-100 opacity-0 text-xs">✧</span>
           </Link>
 
-          {/* Theme Toggle & User Menu */}
           <div className="flex items-center gap-4 sm:gap-6">
             <nav className="hidden sm:flex items-center gap-6 relative" ref={menuRef}>
               {/* Chapters Dropdown */}
@@ -77,37 +76,30 @@ const Navbar: React.FC = () => {
 
                 {/* Dropdown Menu */}
                 {showChaptersMenu && (
-                  <div className="absolute top-full right-0 mt-1 w-72 rounded-lg bg-white dark:bg-slate-950 border border-gray-200 dark:border-gray-700 shadow-xl p-2 max-h-96 overflow-y-auto z-50">
+                  <div className="absolute top-full right-0 mt-1 w-72 rounded-lg bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-xl p-2 overflow-y-auto z-50">
                     {/* All Chapters Option */}
                     <Link
                       href="/chapters"
                       onClick={() => setShowChaptersMenu(false)}
-                      className="block w-full text-left px-3 py-2 rounded-md text-sm font-semibold text-amber-700 dark:text-amber-400 hover:bg-muted transition-colors mb-2 border-b border-gray-200 dark:border-gray-700 pb-2"
+                      className="block w-full text-left px-3 py-1 rounded-md text-sm text-amber-700 dark:text-amber-400 hover:bg-amber-600 transition-colors mb-2 border-b border-gray-200 dark:border-gray-800/60"
                     >
                       📖 View All Chapters
                     </Link>
 
                     {/* Individual Chapters */}
                     {loadingChapters ? (
-                      <div className="px-3 py-2 text-xs text-gray-500 text-center">Loading...</div>
+                      <div className="px-3 py-1 text-xs text-gray-500 text-center">Loading...</div>
                     ) : chapters.length === 0 ? (
-                      <div className="px-3 py-2 text-xs text-gray-500 text-center">No chapters found</div>
+                      <div className="px-3 py-1 text-xs text-gray-500 text-center">No chapters found</div>
                     ) : (
                       chapters.map((chapter) => (
                         <Link
                           key={chapter.id}
                           href={`/chapters/${chapter.chapter_number}`}
                           onClick={() => setShowChaptersMenu(false)}
-                          className="block w-full text-left px-3 py-2 rounded-md text-sm hover:bg-muted transition-colors"
+                          className="block w-full text-left px-3 py-1 rounded-md text-md hover:bg-amber-600 transition-colors font-eczar"
                         >
-                          <div className="font-medium text-gray-900 dark:text-white">
-                            Chapter {chapter.chapter_number}: {chapter.name}
-                          </div>
-                          {chapter.summary && (
-                            <div className="text-xs text-gray-600 dark:text-gray-400 line-clamp-1">
-                              {chapter.summary}
-                            </div>
-                          )}
+                          Chapter {chapter.chapter_number}: {chapter.name}
                         </Link>
                       ))
                     )}

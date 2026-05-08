@@ -66,9 +66,9 @@ export default function ChaptersGrid() {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
       {chapters.map((chapter) => (
         <Link key={chapter.chapter_number} href={`/chapters/${chapter.chapter_number}`}>
-          <Card className="h-full border-l-4 border-amber-600 dark:border-amber-500 bg-white dark:bg-slate-900/50 hover:shadow-lg dark:hover:shadow-amber-900/20 transition-all duration-200 cursor-pointer hover:border-amber-700 dark:hover:border-amber-400 overflow-hidden group flex flex-col">
+          <Card className="h-full border border-l-4 border-amber-600 dark:border-amber-500 hover:shadow-lg dark:hover:shadow-amber-900/20 transition-all duration-200 cursor-pointer hover:border-amber-700 dark:hover:border-amber-400 overflow-hidden group flex flex-col">
             {/* Card Content */}
-            <div className="px-6 py-5 flex flex-col flex-1">
+            <div className="px-6 py-2 flex flex-col flex-1 opacity-85">
 
               <div className="mb-4">
                 <span className="inline-block px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-semibold tracking-wider">
@@ -76,11 +76,11 @@ export default function ChaptersGrid() {
                 </span>
               </div>
 
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-1 group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors line-clamp-2">
+              <h3 className="text-xl sm:text-2xl font-semibold group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors line-clamp-2">
                 {chapter.name_translated}
               </h3>
 
-              <p className="text-sm text-gray-500 dark:text-gray-400 font-serif mb-4">
+              <p className="text-sm mb-2">
                 {chapter.name_transliterated}
               </p>
 
@@ -100,7 +100,7 @@ export default function ChaptersGrid() {
                     <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h12a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6z" />
                   </svg>
                   <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                    {chapter.verses_count}
+                    {chapter.verses_count} verses
                   </span>
                 </div>
                 <div className="text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-semibold group-hover:translate-x-0.5 transition-transform">

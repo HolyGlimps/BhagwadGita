@@ -4,7 +4,7 @@ import { eq } from 'drizzle-orm';
 import { getVerseData } from './api-services/verse.service';
 import { fetchChapter } from './api-utils/rapidapi.client';
 
-async function backgroundCacheVerses(verses: any[], chapterId: number) {
+export async function backgroundCacheVerses(verses: any[], chapterId: number) {
   try {
     const versesToCache = [];
 

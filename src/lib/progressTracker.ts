@@ -7,37 +7,25 @@ export async function markVerseAsRead(
   chapterId: number,
   verseNumber: number
 ) {
-  const existing = await db.query.readingProgress.findFirst({
-    where: and(
-      eq(readingProgress.userId, userId),
-      eq(readingProgress.chapterId, chapterId),
-      eq(readingProgress.verseNumber, verseNumber)
-    ),
-  });
-
-  if (existing) {
-    return await db
-      .update(readingProgress)
-      .set({
+  return await db
+    .insert(readingProgress)
+    .values({
+      userId,
+      chapterId,
+      verseNumber,
+      isCompleted: 1,
+      readAt: new Date(),
+      updatedAt: new Date(),
+    })
+    .onConflictDoUpdate({
+      target: [readingProgress.userId, readingProgress.chapterId, readingProgress.verseNumber],
+      set: {
         isCompleted: 1,
         readAt: new Date(),
         updatedAt: new Date(),
-      })
-      .where(eq(readingProgress.id, existing.id))
-      .returning();
-  } else {
-    return await db
-      .insert(readingProgress)
-      .values({
-        userId,
-        chapterId,
-        verseNumber,
-        isCompleted: 1,
-        readAt: new Date(),
-        updatedAt: new Date(),
-      })
-      .returning();
-  }
+      },
+    })
+    .returning();
 }
 
 export async function getTotalVersesRead(userId: string) {

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { Card } from '@/components/ui';
 
 interface Verse {
   id?: number;
@@ -28,7 +29,6 @@ export default function VerseStreamList({
   totalVerses,
   loading,
   streaming,
-  progress,
   versesLoaded,
   error,
 }: VerseStreamListProps) {
@@ -46,14 +46,13 @@ export default function VerseStreamList({
   // Handle fade out after streaming completes
   useEffect(() => {
     if (!streaming && showProgress) {
-      // Streaming just completed, keep showing progress for 3 seconds
       const fadeTimer = setTimeout(() => {
-        setFadeOut(true); // Start fade animation
-      }, 2000);
+        setFadeOut(true);
+      }, 1000);
 
       const hideTimer = setTimeout(() => {
-        setShowProgress(false); // Hide completely
-      }, 3000); // 500ms for fade animation
+        setShowProgress(false);
+      }, 1500);
 
       return () => {
         clearTimeout(fadeTimer);
@@ -62,7 +61,6 @@ export default function VerseStreamList({
     }
   }, [streaming, showProgress]);
 
-  // Reset progress visibility when chapter changes
   useEffect(() => {
     if (streaming) {
       setShowProgress(true);
@@ -71,7 +69,7 @@ export default function VerseStreamList({
   }, [streaming]);
   if (error && !streaming) {
     return (
-      <div className="min-h-screen bg-white dark:bg-slate-950 flex items-center justify-center px-4">
+      <div className="min-h-screen flex items-center justify-center px-4">
         <div className="text-center max-w-md">
           <p className="text-red-600 dark:text-red-400 mb-4">{error}</p>
           <Link href="/chapters">
@@ -86,10 +84,9 @@ export default function VerseStreamList({
 
   return (
     <div className="w-full">
-      {/* Header */}
-      <div className="mb-8">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-2">
-          Chapter {chapterId} Verses
+      <div className="mb-6 text-center">
+        <h2 className="text-xl sm:text-2xl font-bold uppercase font-amita italic">
+          Chapter - {chapterId}
         </h2>
       </div>
 
@@ -127,78 +124,87 @@ export default function VerseStreamList({
         </div>
       )}
 
-      {/* Verses Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 auto-rows-fr">
+
+      {/* Verses Grid styled like ChaptersGrid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
         {verses.map((verse) => (
           <Link
             key={verse.verseNumber}
             href={`/chapters/${chapterId}/verses/${verse.verseNumber}`}
           >
-            <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-amber-500 dark:hover:border-amber-400 cursor-pointer transition-colors bg-white dark:bg-slate-900 hover:bg-amber-50 dark:hover:bg-slate-800 flex flex-col h-full min-h-[280px]">
+            <Card className="h-full border border-l-4 border-amber-600 dark:border-amber-500 hover:shadow-lg dark:hover:shadow-amber-900/20 transition-all duration-200 cursor-pointer hover:border-amber-700 dark:hover:border-amber-400 overflow-hidden group flex flex-col">
+              <div className="px-6 py-2 flex flex-col flex-1 opacity-85">
+                <div className="mb-4">
+                  <span className="inline-block px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-semibold tracking-wider">
+                    Verse {verse.verseNumber}
+                  </span>
+                </div>
 
-              <div className="mb-3">
-                <span className="inline-block px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-semibold tracking-wider">
-                  Verse {verse.verseNumber}
-                </span>
+                {verse.text && (
+                  <p className="text-xl sm:text-2xl font-devanagari mb-1 font-semibold group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors">
+                    {verse.text}
+                  </p>
+                )}
+
+                {verse.transliteration && (
+                  <p className="text-sm mb-2">
+                    {verse.transliteration}
+                  </p>
+                )}
+
+                {verse.translations && (
+                  <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-5 flex-1 line-clamp-2">
+                    {verse.translations[0].description}
+                  </p>
+                )}
+
+                <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center gap-2">
+                    <svg
+                      className="w-4 h-4 text-amber-600 dark:text-amber-500"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h12a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6z" />
+                    </svg>
+                    <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                      {verse.commentaries?.length || 0} commentaries
+                    </span>
+                  </div>
+                  <div className="text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-semibold group-hover:translate-x-0.5 transition-transform">
+                    Read →
+                  </div>
+                </div>
               </div>
-
-              {verse.transliteration && (
-                <p className="text-sm text-gray-600 dark:text-gray-300 italic mb-2 line-clamp-2">
-                  {verse.transliteration}
-                </p>
-              )}
-
-              {verse.translations && (
-                <p className="text-sm text-gray-600 dark:text-gray-300 italic mb-2 line-clamp-2">
-                  {verse.translations[0].description}
-                </p>
-              )}
-
-              {verse.text && (
-                <p className="text-sm text-gray-700 dark:text-gray-400 line-clamp-4 flex-grow">
-                  {verse.text}
-                </p>
-              )}
-
-              <div className="mt-3 text-amber-600 dark:text-amber-400 text-sm font-medium">
-                Read More →
-              </div>
-            </div>
+            </Card>
           </Link>
         ))}
 
-        {/* Skeleton loaders for verses being loaded */}
         {streaming &&
           Array.from({
             length: Math.min(3, totalVerses - versesLoaded),
           }).map((_, idx) => (
-            <div
+            <Card
               key={`skeleton-${versesLoaded + idx}`}
-              className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-100 dark:bg-slate-800 animate-pulse flex flex-col h-full min-h-[280px]"
+              className="h-full border border-l-4 border-amber-600 dark:border-amber-500 bg-gray-100 dark:bg-zinc-800 animate-pulse overflow-hidden flex flex-col"
             >
-              {/* Verse badge skeleton */}
-              <div className="mb-3">
-                <div className="inline-block h-6 bg-gray-300 dark:bg-slate-700 rounded-full w-24"></div>
+              <div className="px-6 py-2 flex flex-col flex-1 opacity-85">
+                <div className="mb-4">
+                  <div className="inline-block h-6 bg-gray-300 dark:bg-zinc-700 rounded-full w-24"></div>
+                </div>
+                <div className="h-4 bg-gray-300 dark:bg-zinc-700 rounded w-5/6 mb-2"></div>
+                <div className="h-4 bg-gray-300 dark:bg-zinc-700 rounded w-4/5 mb-3"></div>
+                <div className="flex-grow mb-3 space-y-2">
+                  <div className="h-4 bg-gray-300 dark:bg-zinc-700 rounded w-full"></div>
+                  <div className="h-4 bg-gray-300 dark:bg-zinc-700 rounded w-full"></div>
+                  <div className="h-4 bg-gray-300 dark:bg-zinc-700 rounded w-5/6"></div>
+                </div>
+                <div className="h-4 bg-gray-300 dark:bg-zinc-700 rounded w-24"></div>
               </div>
-
-              {/* Transliteration skeleton */}
-              <div className="h-4 bg-gray-300 dark:bg-slate-700 rounded w-5/6 mb-2"></div>
-              <div className="h-4 bg-gray-300 dark:bg-slate-700 rounded w-4/5 mb-3"></div>
-
-              {/* Text content skeleton (flex-grow to match real card) */}
-              <div className="flex-grow mb-3 space-y-2">
-                <div className="h-4 bg-gray-300 dark:bg-slate-700 rounded w-full"></div>
-                <div className="h-4 bg-gray-300 dark:bg-slate-700 rounded w-full"></div>
-                <div className="h-4 bg-gray-300 dark:bg-slate-700 rounded w-5/6"></div>
-              </div>
-
-              {/* Read More skeleton */}
-              <div className="h-4 bg-gray-300 dark:bg-slate-700 rounded w-24"></div>
-            </div>
+            </Card>
           ))}
       </div>
 
-      {/* Empty State */}
       {!loading && !streaming && verses.length === 0 && (
         <div className="text-center py-12">
           <p className="text-gray-600 dark:text-gray-400 mb-4">

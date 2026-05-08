@@ -42,9 +42,28 @@ export default async function handler(
     res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
     res.setHeader('ETag', `verse-${chapterId}-${verseNum}`);
 
-    const verseData = await getVerse(chapterId, verseNum);
-    const chapterData = await fetchChapter(chapterId.toString());
-    const versesCount = chapterData.verses_count || 700;
+    let verseData: ResponseData;
+    try {
+      verseData = await getVerse(chapterId, verseNum);
+    } catch (err: any) {
+      console.error('Error in getVerse:', err);
+      return res.status(500).json({ error: 'Failed to fetch verse data' });
+    }
+    if (!verseData) {
+      return res.status(404).json({ error: 'Verse not found' });
+    }
+
+    let chapterData: ResponseData;
+    try {
+      chapterData = await fetchChapter(chapterId.toString());
+    } catch (err) {
+      console.error('Error in fetchChapter:', err);
+      return res.status(500).json({ error: 'Failed to fetch chapter data' });
+    }
+    if (!chapterData || typeof chapterData.verses_count !== 'number') {
+      return res.status(404).json({ error: 'Chapter not found or invalid data' });
+    }
+    const versesCount = chapterData.verses_count;
 
     const createdAt = new Date(verseData.createdAt);
     const isRecentFetch = Date.now() - createdAt.getTime() < 60000;

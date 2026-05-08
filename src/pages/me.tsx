@@ -48,7 +48,7 @@ export default function ProfilePage() {
         name: displayName.trim(),
       });
 
-      await update({name: displayName})
+      await update({ name: displayName })
 
       setNameSuccess('Display name updated successfully!');
       console.log("name updated")
@@ -139,7 +139,7 @@ export default function ProfilePage() {
           </div>
 
           {/* Profile Card */}
-          <div className="bg-white dark:bg-slate-900/50 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden mb-4">
+          <div className="bg-white dark:bg-zinc-900/50 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden mb-4">
             <div className="px-6 sm:px-8 py-6 border-b border-gray-200 dark:border-gray-800">
               <div className="flex items-start gap-4 sm:gap-6">
                 {/* Avatar */}
@@ -194,7 +194,7 @@ export default function ProfilePage() {
                           setNameSuccess('');
                         }}
                         maxLength={100}
-                        className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                        className="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
                         placeholder="Enter your display name"
                       />
                       <div className="flex gap-2">

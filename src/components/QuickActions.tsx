@@ -75,7 +75,7 @@ export default function QuickActions() {
   ];
 
   return (
-    <section ref={ref} className={`py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto w-full transition-opacity duration-700 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+    <section ref={ref} className={`py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full transition-opacity duration-700 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
         {actions.map((action, idx) => (

@@ -3,6 +3,7 @@ import { verseContent } from '@/db/schema';
 import { eq, and } from 'drizzle-orm';
 import { getVerseData } from './api-services/verse.service';
 import { fetchChapter } from './api-utils/rapidapi.client';
+import { backgroundCacheVerses } from './chapterVerses';
 
 export async function getVerse(chapterId: number, verseNumber: number) {
   const cachedVerse = await db.query.verseContent.findFirst({
@@ -25,6 +26,9 @@ export async function getVerse(chapterId: number, verseNumber: number) {
 
   try {
     const apiVerse = await getVerseData(chapterId.toString(), verseNumber.toString());
+    if (!apiVerse || apiVerse.detail === 'Verse not found') {
+      return undefined;
+    }
 
     const stored = await db
       .insert(verseContent)
@@ -41,35 +45,24 @@ export async function getVerse(chapterId: number, verseNumber: number) {
     console.log(
       `[STORED] Chapter ${chapterId}, Verse ${verseNumber} saved to database`
     );
+
+    try {
+      const chapterData = await fetchChapter(chapterId.toString());
+      const verses = chapterData.verses || [];
+      if (verses.length > 1) {
+        const versesToCache = verses.filter((v: any) => v.verse_number !== verseNumber);
+        backgroundCacheVerses(versesToCache, chapterId);
+      }
+    } catch (err) {
+      console.error('[Background Cache] Failed to trigger:', err);
+    }
+
     return stored[0];
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.response?.status === 404 || error?.message?.includes('Verse not found')) {
+      return undefined;
+    }
     console.error('Error fetching verse from API:', error);
-    throw error;
-  }
-}
-
-// REMOVED: getChapterVerses - unused function (logic moved to API endpoint)
-async function _REMOVED_getChapterVerses(chapterId: number) {
-  try {
-    const chapterData = await fetchChapter(chapterId.toString());
-    const versesCount = chapterData.verses_count || chapterData.verses?.length || 0;
-
-    const cachedVerses = await db.query.verseContent.findMany({
-      where: eq(verseContent.chapterId, chapterId),
-    });
-
-    console.log(
-      `[INFO] Chapter ${chapterId}: ${cachedVerses.length}/${versesCount} verses in cache`
-    );
-
-    return {
-      chapterId,
-      totalVerses: versesCount,
-      cachedCount: cachedVerses.length,
-      cachedVerses,
-    };
-  } catch (error) {
-    console.error('Error fetching chapter verses:', error);
     throw error;
   }
 }
