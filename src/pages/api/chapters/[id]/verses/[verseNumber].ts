@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getVerse } from '@/lib/verseCache';
-import { fetchChapter } from '@/lib/api-utils/rapidapi.client';
+import { CHAPTER_VERSE_COUNTS } from '@/constants/gita';
 
 type ResponseData =
   | {
@@ -39,12 +39,14 @@ export default async function handler(
       return res.status(400).json({ error: 'Chapter ID and Verse Number must be valid integers' });
     }
 
-    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate');
     res.setHeader('ETag', `verse-${chapterId}-${verseNum}`);
 
     const verseData = await getVerse(chapterId, verseNum);
-    const chapterData = await fetchChapter(chapterId.toString());
-    const versesCount = chapterData.verses_count || 700;
+    if (!verseData) {
+      return res.status(404).json({ error: 'Verse not found' });
+    }
+    const versesCount = CHAPTER_VERSE_COUNTS[chapterId] || 47;
 
     const createdAt = new Date(verseData.createdAt);
     const isRecentFetch = Date.now() - createdAt.getTime() < 60000;
@@ -57,9 +59,13 @@ export default async function handler(
       source,
     });
   } catch (error: any) {
-    console.error('Verse endpoint error:', error);
+    console.error('====================================================');
+    console.error('[CRITICAL VERSE ENDPOINT ERROR]', error);
+    console.error('====================================================');
     return res.status(500).json({
       error: error instanceof Error ? error.message : 'Failed to fetch verse',
+      details: error?.response?.data || error?.message || String(error),
+      stack: error instanceof Error ? error.stack : undefined,
     });
   }
 }

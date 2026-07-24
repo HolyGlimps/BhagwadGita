@@ -44,7 +44,7 @@ export const useVerseData = (chapterNumber: string | number, verseNumber: string
         setData(verseResponse.data.data || verseResponse.data);
         setVerseCount(verseResponse.data.verses_count || '');
       } catch (err) {
-        console.error('Failed to fetch verse:', err);
+        console.error('Failed to fetch verse:', err?.response?.data || err?.message || err);
         setError('Failed to load verse data');
       } finally {
         setLoading(false);

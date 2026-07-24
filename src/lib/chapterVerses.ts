@@ -112,7 +112,9 @@ async function backgroundFetchMissingVerses(chapterId: number, verseNumbers: num
 
       // Batch insert
       if (validVerses.length > 0) {
-        await db.insert(verseContent).values(validVerses as any);
+        await db.insert(verseContent)
+          .values(validVerses as any)
+          .onConflictDoNothing({ target: [verseContent.chapterId, verseContent.verseNumber] });
         console.log(`[Background Fetch] Cached ${validVerses.length} verses (batch ${i / batchSize + 1})`);
       }
 

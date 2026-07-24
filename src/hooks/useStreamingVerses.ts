@@ -175,7 +175,7 @@ export const useStreamingVerses = (
         setLoading(false);
       }
     } catch (err: any) {
-      if (err.name === 'AbortError') {
+      if (err.name === 'AbortError' || err.name === 'CanceledError' || err.code === 'ERR_CANCELED' || axios.isCancel(err)) {
         console.log('[Streaming] Streaming was cancelled (different chapter selected)');
         if (isMountedRef.current) {
           setGlobalStreaming((prev) => ({
@@ -283,7 +283,7 @@ export const useStreamingVerses = (
           }));
         }
       } catch (err: any) {
-        if (err.name === 'AbortError') {
+        if (err.name === 'AbortError' || err.name === 'CanceledError' || err.code === 'ERR_CANCELED' || axios.isCancel(err)) {
           console.log('[Streaming] Continue streaming was cancelled');
           return;
         }
@@ -324,7 +324,7 @@ export const useStreamingVerses = (
       try {
         await startStreaming();
       } catch (error) {
-        if ((error as any)?.name !== 'AbortError') {
+        if ((error as any)?.name !== 'AbortError' && (error as any)?.name !== 'CanceledError' && (error as any)?.code !== 'ERR_CANCELED' && !axios.isCancel(error)) {
           console.error('[Streaming] Unhandled error in startStreaming:', error);
         }
       }

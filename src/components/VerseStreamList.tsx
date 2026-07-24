@@ -71,11 +71,11 @@ export default function VerseStreamList({
   }, [streaming]);
   if (error && !streaming) {
     return (
-      <div className="min-h-screen bg-white dark:bg-slate-950 flex items-center justify-center px-4">
-        <div className="text-center max-w-md">
-          <p className="text-red-600 dark:text-red-400 mb-4">{error}</p>
+      <div className="flex justify-center items-center bg-background px-4 min-h-screen">
+        <div className="max-w-md text-center">
+          <p className="mb-4 text-red-600 dark:text-red-400">{error}</p>
           <Link href="/chapters">
-            <button className="px-6 py-2 bg-amber-600 dark:bg-amber-500 text-white rounded-lg hover:bg-amber-700">
+            <button className="bg-amber-600 hover:bg-amber-700 dark:bg-amber-500 px-6 py-2 rounded-lg text-white">
               Back to Chapters
             </button>
           </Link>
@@ -87,8 +87,8 @@ export default function VerseStreamList({
   return (
     <div className="w-full">
       {/* Header */}
-      <div className="mb-8">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-2">
+      <div className="mb-4">
+        <h2 className="mb-2 font-bold text-2xl sm:text-3xl">
           Chapter {chapterId} Verses
         </h2>
       </div>
@@ -98,29 +98,29 @@ export default function VerseStreamList({
           className={`mb-8 pb-6 border-b border-gray-200 dark:border-gray-700 transition-opacity duration-300 ${fadeOut ? 'opacity-0' : 'opacity-100'
             }`}
         >
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex justify-between items-center mb-4">
             <p className="text-gray-600 dark:text-gray-400">
               Loading Verse {currentVerseNumber} of {totalVerses}
             </p>
-            <span className="text-sm font-medium text-amber-600 dark:text-amber-400">
+            <span className="font-medium text-amber-600 dark:text-amber-400 text-sm">
               {verseProgress}%
             </span>
           </div>
 
           {/* Progress Bar */}
-          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+          <div className="bg-gray-200 dark:bg-gray-700 rounded-full w-full h-2">
             <div
-              className="bg-amber-600 dark:bg-amber-500 h-2 rounded-full transition-all duration-300 ease-out"
+              className="bg-amber-600 dark:bg-amber-500 rounded-full h-2 transition-all duration-300 ease-out"
               style={{ width: `${verseProgress}%` }}
             ></div>
           </div>
 
           {streaming ? (
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+            <p className="mt-2 text-gray-500 dark:text-gray-400 text-sm">
               Loading verses...
             </p>
           ) : (
-            <p className="text-sm text-green-600 dark:text-green-400 mt-2">
+            <p className="mt-2 text-green-600 dark:text-green-400 text-sm">
               ✓ All verses loaded
             </p>
           )}
@@ -128,39 +128,39 @@ export default function VerseStreamList({
       )}
 
       {/* Verses Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 auto-rows-fr">
+      <div className="gap-4 grid grid-cols-1 md:grid-cols-2 auto-rows-fr">
         {verses.map((verse) => (
           <Link
             key={verse.verseNumber}
             href={`/chapters/${chapterId}/verses/${verse.verseNumber}`}
           >
-            <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-amber-500 dark:hover:border-amber-400 cursor-pointer transition-colors bg-white dark:bg-slate-900 hover:bg-amber-50 dark:hover:bg-slate-800 flex flex-col h-full min-h-[280px]">
+            <div className="flex flex-col bg-white hover:bg-amber-50 dark:bg-slate-900 dark:hover:bg-slate-800 p-4 border border-gray-200 hover:border-amber-500 dark:border-gray-700 dark:hover:border-amber-400 rounded-lg h-full min-h-[280px] transition-colors cursor-pointer">
 
               <div className="mb-3">
-                <span className="inline-block px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-semibold tracking-wider">
+                <span className="inline-block bg-amber-100 dark:bg-amber-900/30 px-3 py-1 rounded-full font-semibold text-amber-700 dark:text-amber-400 text-xs tracking-wider">
                   Verse {verse.verseNumber}
                 </span>
               </div>
 
               {verse.transliteration && (
-                <p className="text-sm text-gray-600 dark:text-gray-300 italic mb-2 line-clamp-2">
+                <p className="mb-2 text-gray-600 dark:text-gray-300 text-sm italic line-clamp-2">
                   {verse.transliteration}
                 </p>
               )}
 
               {verse.translations && (
-                <p className="text-sm text-gray-600 dark:text-gray-300 italic mb-2 line-clamp-2">
+                <p className="mb-2 text-gray-600 dark:text-gray-300 text-sm italic line-clamp-2">
                   {verse.translations[0].description}
                 </p>
               )}
 
               {verse.text && (
-                <p className="text-sm text-gray-700 dark:text-gray-400 line-clamp-4 flex-grow">
+                <p className="flex-grow text-gray-700 dark:text-gray-400 text-sm line-clamp-4">
                   {verse.text}
                 </p>
               )}
 
-              <div className="mt-3 text-amber-600 dark:text-amber-400 text-sm font-medium">
+              <div className="mt-3 font-medium text-amber-600 dark:text-amber-400 text-sm">
                 Read More →
               </div>
             </div>
@@ -174,38 +174,38 @@ export default function VerseStreamList({
           }).map((_, idx) => (
             <div
               key={`skeleton-${versesLoaded + idx}`}
-              className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-100 dark:bg-slate-800 animate-pulse flex flex-col h-full min-h-[280px]"
+              className="flex flex-col bg-gray-100 dark:bg-slate-800 p-4 border border-gray-200 dark:border-gray-700 rounded-lg h-full min-h-[280px] animate-pulse"
             >
               {/* Verse badge skeleton */}
               <div className="mb-3">
-                <div className="inline-block h-6 bg-gray-300 dark:bg-slate-700 rounded-full w-24"></div>
+                <div className="inline-block bg-gray-300 dark:bg-slate-700 rounded-full w-24 h-6"></div>
               </div>
 
               {/* Transliteration skeleton */}
-              <div className="h-4 bg-gray-300 dark:bg-slate-700 rounded w-5/6 mb-2"></div>
-              <div className="h-4 bg-gray-300 dark:bg-slate-700 rounded w-4/5 mb-3"></div>
+              <div className="bg-gray-300 dark:bg-slate-700 mb-2 rounded w-5/6 h-4"></div>
+              <div className="bg-gray-300 dark:bg-slate-700 mb-3 rounded w-4/5 h-4"></div>
 
               {/* Text content skeleton (flex-grow to match real card) */}
-              <div className="flex-grow mb-3 space-y-2">
-                <div className="h-4 bg-gray-300 dark:bg-slate-700 rounded w-full"></div>
-                <div className="h-4 bg-gray-300 dark:bg-slate-700 rounded w-full"></div>
-                <div className="h-4 bg-gray-300 dark:bg-slate-700 rounded w-5/6"></div>
+              <div className="flex-grow space-y-2 mb-3">
+                <div className="bg-gray-300 dark:bg-slate-700 rounded w-full h-4"></div>
+                <div className="bg-gray-300 dark:bg-slate-700 rounded w-full h-4"></div>
+                <div className="bg-gray-300 dark:bg-slate-700 rounded w-5/6 h-4"></div>
               </div>
 
               {/* Read More skeleton */}
-              <div className="h-4 bg-gray-300 dark:bg-slate-700 rounded w-24"></div>
+              <div className="bg-gray-300 dark:bg-slate-700 rounded w-24 h-4"></div>
             </div>
           ))}
       </div>
 
       {/* Empty State */}
       {!loading && !streaming && verses.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
+        <div className="py-12 text-center">
+          <p className="mb-4 text-gray-600 dark:text-gray-400">
             No verses loaded
           </p>
           <Link href="/chapters">
-            <button className="px-6 py-2 bg-amber-600 dark:bg-amber-500 text-white rounded-lg hover:bg-amber-700">
+            <button className="bg-amber-600 hover:bg-amber-700 dark:bg-amber-500 px-6 py-2 rounded-lg text-white">
               Back to Chapters
             </button>
           </Link>

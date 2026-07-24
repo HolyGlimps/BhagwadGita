@@ -27,7 +27,12 @@ export async function fetchVerseWithCacheStatus(
       data: verseData,
     };
   } catch (error: any) {
-    if (error.name === 'AbortError' || axios.isCancel(error)) {
+    if (
+      error.name === 'AbortError' ||
+      axios.isCancel(error) ||
+      error.code === 'ERR_CANCELED' ||
+      signal?.aborted
+    ) {
       console.log(`[Streaming] Verse ${verseNumber} fetch cancelled`);
       return {
         verseNumber,
@@ -39,7 +44,7 @@ export async function fetchVerseWithCacheStatus(
 
     console.error(
       `[Streaming] Error fetching verse ${verseNumber}:`,
-      error
+      error.response?.data || error.message || error
     );
     return {
       verseNumber,
@@ -54,7 +59,7 @@ export async function streamChapterVerses(
   chapterId: number,
   totalVerses: number,
   onVerse?: (result: VerseStreamResult) => void,
-  concurrency: number = 3,
+  concurrency: number = 1,
   signal?: AbortSignal
 ): Promise<VerseStreamResult[]> {
   const results: VerseStreamResult[] = [];
@@ -98,7 +103,8 @@ export async function streamChapterVerses(
     }
 
     if (verseQueue.length > 0 && !signal?.aborted) {
-      await new Promise((resolve) => setTimeout(resolve, 50));
+      // Increased delay to 500ms to avoid RapidAPI rate limits (429 Too Many Requests)
+      await new Promise((resolve) => setTimeout(resolve, 500));
     }
   }
 

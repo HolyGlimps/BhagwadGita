@@ -1,4 +1,12 @@
 import axios from 'axios';
+import https from 'https';
+
+const httpsAgent = new https.Agent({
+  keepAlive: true,
+  maxSockets: 10,
+  maxFreeSockets: 5,
+  timeout: 60000,
+});
 
 const RAPID_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const RAPID_API_KEY = process.env.RAPID_API_KEY;
@@ -22,6 +30,7 @@ export async function rapidAPIRequest<T = any>(config: RapidAPIConfig): Promise<
       'X-RapidAPI-Host': RAPID_API_HOST,
       'Content-Type': 'application/json'
     },
+    httpsAgent,
   });
 
   return response.data;

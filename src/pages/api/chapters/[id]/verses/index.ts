@@ -27,7 +27,7 @@ export default async function handler(
       return res.status(400).json({ error: 'Chapter ID must be a valid integer' });
     }
 
-    res.setHeader('Cache-Control', 'public, max-age=86400, immutable');
+    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate');
     res.setHeader('ETag', `chapter-${chapterId}-verses`);
 
     const data = await getChapterAllVerses(chapterId);

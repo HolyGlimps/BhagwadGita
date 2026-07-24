@@ -1,6 +1,8 @@
-import { pgTable, serial, text, integer, timestamp, uniqueIndex, json } from 'drizzle-orm/pg-core';
+import { serial, text, integer, timestamp, uniqueIndex, json, pgSchema } from 'drizzle-orm/pg-core';
 
-export const users = pgTable('users', {
+export const bhagwadGitaSchema = pgSchema("gita");
+
+export const users = bhagwadGitaSchema.table('users', {
   id: text('id').primaryKey(),
   email: text('email').notNull().unique(),
   name: text('name'),
@@ -9,7 +11,7 @@ export const users = pgTable('users', {
   deletedAt: timestamp('deleted_at'),
 });
 
-export const verseContent = pgTable(
+export const verseContent = bhagwadGitaSchema.table(
   'verse_content',
   {
     id: serial('id').primaryKey(),
@@ -31,7 +33,7 @@ export const verseContent = pgTable(
   }
 );
 
-export const readingProgress = pgTable(
+export const readingProgress = bhagwadGitaSchema.table(
   'reading_progress',
   {
     id: serial('id').primaryKey(),
@@ -55,7 +57,7 @@ export const readingProgress = pgTable(
   }
 );
 
-export const verseOfTheDay = pgTable('verse_of_the_day', {
+export const verseOfTheDay = bhagwadGitaSchema.table('verse_of_the_day', {
   id: serial('id').primaryKey(),
   chapterId: integer('chapter_id').notNull(),
   verseNumber: integer('verse_number').notNull(),

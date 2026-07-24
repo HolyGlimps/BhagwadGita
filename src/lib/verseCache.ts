@@ -36,7 +36,27 @@ export async function getVerse(chapterId: number, verseNumber: number) {
         translations: apiVerse.translations as any,
         commentaries: apiVerse.commentaries as any,
       })
+      .onConflictDoNothing({ target: [verseContent.chapterId, verseContent.verseNumber] })
       .returning();
+
+    if (stored.length === 0) {
+      // A concurrent request tried to insert this verse. Wait for it to commit.
+      for (let i = 0; i < 5; i++) {
+        const newlyCached = await db.query.verseContent.findFirst({
+          where: and(
+            eq(verseContent.chapterId, chapterId),
+            eq(verseContent.verseNumber, verseNumber)
+          ),
+        });
+        if (newlyCached) {
+          return newlyCached;
+        }
+        await new Promise((resolve) => setTimeout(resolve, 200));
+      }
+      // If the concurrent request aborted or rolled back, try fetching/inserting again.
+      console.warn(`[RETRY] Concurrent insert for ${chapterId}:${verseNumber} did not commit. Retrying...`);
+      return getVerse(chapterId, verseNumber);
+    }
 
     console.log(
       `[STORED] Chapter ${chapterId}, Verse ${verseNumber} saved to database`
